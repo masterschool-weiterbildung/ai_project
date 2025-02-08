@@ -1,0 +1,5 @@
+{
+  "database": {
+    "url": "postgresql://postgres:123456@localhost/postgres"
+  }
+}
