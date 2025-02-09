@@ -1,5 +1,8 @@
 {
-  "database": {
+  "database_dev": {
     "url": "postgresql://postgres:123456@localhost/postgres"
+  },
+  "database_prod": {
+    "url": "postgresql://postgresaidb:123456@localhost/postgres"
   }
 }

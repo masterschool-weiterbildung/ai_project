@@ -10,7 +10,7 @@ db_path = Path(__file__).parent.parent / "config.json"
 with open(db_path, 'r') as config_file:
     config = json.load(config_file)
 
-DATABASE_URL = config['database']['url']
+DATABASE_URL = config['database_dev']['url']
 
 engine = create_engine(DATABASE_URL, echo=True)
 
