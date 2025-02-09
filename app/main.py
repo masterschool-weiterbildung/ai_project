@@ -7,6 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.routers import auth, public
 from app.routers import protected
+from app.utility.logger import get_logger
 from app.utility.middleware import RateLimitMiddleware
 
 
@@ -25,7 +26,7 @@ origins = [
     "http://localhost:8080",
 ]
 
-logging.basicConfig(level=logging.INFO)
+logger = get_logger()
 
 # Logging Requests and Responses
 @app.middleware("http")
@@ -34,8 +35,12 @@ async def log_requests(request: Request, call_next):
     response = await call_next(request)
     process_time = time.time() - start_time
 
-    logging.info(
-        f"{request.method} {request.url} - {response.status_code} - {process_time:.4f}s")
+    logger.info({
+        "method": request.method,
+        "url": request.url.path,
+        "status_code": response.status_code,
+        "client": request.client.host,
+    })
 
     return response
 

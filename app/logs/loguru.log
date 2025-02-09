@@ -1,0 +1,27 @@
+{"timestamp": "2025-02-09 13:54:00.848", "message": "{'event': 'Welcome Message'}", "level": "INFO"}
+{"timestamp": "2025-02-09 13:54:00.848", "message": "{'method': 'GET', 'url': '/public/welcome', 'status_code': 200, 'client': '127.0.0.1'}", "level": "INFO"}
+{"timestamp": "2025-02-09 13:57:47.666", "message": "{'method': 'GET', 'url': '/public/welcome', 'status_code': 200, 'client': '127.0.0.1'}", "level": "INFO"}
+{"timestamp": "2025-02-09 13:58:43.169", "message": "{'event': 'Welcome Message'}", "level": "INFO"}
+{"timestamp": "2025-02-09 13:58:43.171", "message": "{'method': 'GET', 'url': '/public/welcome', 'status_code': 200, 'client': '127.0.0.1'}", "level": "INFO"}
+{"timestamp": "2025-02-09 13:59:59.897", "message": "{'event': 'Welcome Message'}", "level": "INFO"}
+{"timestamp": "2025-02-09 13:59:59.910", "message": "{'method': 'GET', 'url': '/public/welcome', 'status_code': 200, 'client': '127.0.0.1'}", "level": "INFO"}
+{"timestamp": "2025-02-09 14:35:15.845", "message": "{'method': 'GET', 'url': '/favicon.ico', 'status_code': 404, 'client': '127.0.0.1'}", "level": "INFO"}
+{"timestamp": "2025-02-09 14:35:15.866", "message": "{'method': 'GET', 'url': '/favicon.ico', 'status_code': 404, 'client': '127.0.0.1'}", "level": "INFO"}
+{"timestamp": "2025-02-09 14:35:16.665", "message": "{'method': 'GET', 'url': '/openapi.json', 'status_code': 200, 'client': '127.0.0.1'}", "level": "INFO"}
+{"timestamp": "2025-02-09 14:35:16.666", "message": "{'method': 'GET', 'url': '/favicon.ico', 'status_code': 404, 'client': '127.0.0.1'}", "level": "INFO"}
+{"timestamp": "2025-02-09 14:42:19.528", "message": "{'method': 'POST', 'url': '/token', 'status_code': 200, 'client': '127.0.0.1'}", "level": "INFO"}
+{"timestamp": "2025-02-09 14:42:32.308", "message": "{'method': 'GET', 'url': '/api/users/21', 'status_code': 400, 'client': '127.0.0.1'}", "level": "INFO"}
+{"timestamp": "2025-02-09 14:48:08.719", "message": "{'Process': '{process_time}'}", "level": "INFO"}
+{"timestamp": "2025-02-09 14:48:30.518", "message": "{'Process': '{process_time}'}", "level": "INFO"}
+{"timestamp": "2025-02-09 14:51:44.529", "message": "{'method': 'GET', 'url': '/public/welcome', 'status_code': 200, 'client': '127.0.0.1'}", "level": "INFO"}
+{"timestamp": "2025-02-09 14:53:51.258", "message": "{'method': 'GET', 'url': '/public/welcome', 'status_code': 200, 'client': '127.0.0.1'}", "level": "INFO"}
+{"timestamp": "2025-02-09 14:54:18.755", "message": "{'method': 'GET', 'url': '/public/welcome', 'status_code': 200, 'client': '127.0.0.1'}", "level": "INFO"}
+{"timestamp": "2025-02-09 14:55:32.320", "message": "{'method': 'GET', 'url': '/public/welcome', 'status_code': 200, 'client': '127.0.0.1'}", "level": "INFO"}
+{"timestamp": "2025-02-09 14:55:56.150", "message": "{'method': 'GET', 'url': '/public/welcome', 'status_code': 401, 'client': '127.0.0.1'}", "level": "INFO"}
+{"timestamp": "2025-02-09 14:56:07.344", "message": "{'event': 'Welcome Message'}", "level": "INFO"}
+{"timestamp": "2025-02-09 14:56:07.345", "message": "{'method': 'GET', 'url': '/public/welcome', 'status_code': 200, 'client': '127.0.0.1'}", "level": "INFO"}
+{"timestamp": "2025-02-09 14:57:09.154", "message": "{'method': 'GET', 'url': '/public/welcome', 'status_code': 401, 'client': '127.0.0.1'}", "level": "INFO"}
+{"timestamp": "2025-02-09 14:57:13.957", "message": "{'event': 'Welcome Message'}", "level": "INFO"}
+{"timestamp": "2025-02-09 14:57:13.958", "message": "{'method': 'GET', 'url': '/public/welcome', 'status_code': 200, 'client': '127.0.0.1'}", "level": "INFO"}
+{"timestamp": "2025-02-09 14:57:15.138", "message": "{'event': 'Welcome Message'}", "level": "INFO"}
+{"timestamp": "2025-02-09 14:57:15.139", "message": "{'method': 'GET', 'url': '/public/welcome', 'status_code': 200, 'client': '127.0.0.1'}", "level": "INFO"}
