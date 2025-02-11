@@ -1,5 +1,4 @@
 import time
-import logging
 
 from fastapi import FastAPI, Request
 from fastapi.middleware.gzip import GZipMiddleware
@@ -31,9 +30,7 @@ logger = get_logger()
 # Logging Requests and Responses
 @app.middleware("http")
 async def log_requests(request: Request, call_next):
-    start_time = time.time()
     response = await call_next(request)
-    process_time = time.time() - start_time
 
     logger.info({
         "method": request.method,
