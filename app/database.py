@@ -25,4 +25,4 @@ def get_session():
         yield session
 
 if __name__ == '__main__':
-    create_db_and_tables();
+    create_db_and_tables()

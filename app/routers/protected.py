@@ -20,8 +20,7 @@ async def read_user(user_id: int,
 
 @router.post("/users/", response_model=User,
              status_code=status.HTTP_201_CREATED)
-async def create_user(user: UserCreate,
-                      current_user: dict = Depends(get_current_active_user)):
+async def create_user(user: UserCreate):
     db_user = service_create_user(user)
     return db_user
 

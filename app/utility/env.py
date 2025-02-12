@@ -4,12 +4,12 @@ from dotenv import load_dotenv
 
 
 def get_key() -> str:
-    """
-    Retrieves the API key from the environment variables.
-
-    Returns:
-        str: The API key for accessing the OMDB API.
-    """
     load_dotenv()
 
-    return os.getenv('key')
+    return os.getenv('SECRET_KEY')
+
+
+def get_token_expire_minutes() -> int:
+    load_dotenv()
+
+    return os.getenv('ACCESS_TOKEN_EXPIRE_MINUTES')
