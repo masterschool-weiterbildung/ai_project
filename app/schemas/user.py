@@ -4,7 +4,8 @@ from pydantic import BaseModel, Field
 class UserBase(BaseModel):
     username: str
     email: str
-    is_active: bool = Field(default=False)
+    is_active: bool = Field(default=True)
+    is_disabled: bool = Field(default=False)
 
 
 class UserUpdate(BaseModel):
@@ -16,11 +17,13 @@ class UserUpdate(BaseModel):
 
 
 class UserCreate(UserBase):
-    password: str
+    password_hash: str
+    role: str
 
 
 class User(UserBase):
-    id: int
+    user_id: int
+    password_hash: str
 
     class Config:
         from_attributes = True
