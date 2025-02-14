@@ -12,7 +12,6 @@ from sqlalchemy.exc import IntegrityError
 
 from app.schemas.user_profile import UserProfileBase
 from app.schemas.user_roles import UserRole
-from app.utility.constant import ROLES, PERMISSIONS
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -220,7 +219,6 @@ def get_role_permission(role_name: str):
 
 
 def main():
-
     print(get_user_role(1))
 
     """
