@@ -7,7 +7,6 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.routers import auth, public, protected_roles, protected_permissions
 from app.routers import protected_user
-from app.utility.env import get_logfire_key
 from app.utility.logger import get_logger
 from app.utility.middleware import RateLimitMiddleware
 
