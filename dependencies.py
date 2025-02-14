@@ -3,8 +3,6 @@ from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from jwt.exceptions import InvalidTokenError
 from app.schemas.user import User
-from app.services.user_service import get_user_role, get_role_permission
-from app.utility.constant import PERMISSIONS, ROLES
 from app.utility.env import get_key
 
 import jwt

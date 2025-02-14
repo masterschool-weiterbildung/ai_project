@@ -20,3 +20,9 @@
 {"timestamp": "2025-02-13 20:08:43.297", "message": "{'method': 'POST', 'url': '/token', 'status_code': 401, 'client': '127.0.0.1'}", "level": "INFO"}
 {"timestamp": "2025-02-14 08:02:58.610", "message": "{'method': 'GET', 'url': '/docs', 'status_code': 200, 'client': '127.0.0.1'}", "level": "INFO"}
 {"timestamp": "2025-02-14 08:03:00.849", "message": "{'method': 'GET', 'url': '/openapi.json', 'status_code': 200, 'client': '127.0.0.1'}", "level": "INFO"}
+{"timestamp": "2025-02-14 09:51:21.918", "message": "{'method': 'GET', 'url': '/favicon.ico', 'status_code': 404, 'client': '127.0.0.1'}", "level": "INFO"}
+{"timestamp": "2025-02-14 09:51:21.930", "message": "{'method': 'GET', 'url': '/docs', 'status_code': 200, 'client': '127.0.0.1'}", "level": "INFO"}
+{"timestamp": "2025-02-14 09:51:22.381", "message": "{'method': 'GET', 'url': '/openapi.json', 'status_code': 200, 'client': '127.0.0.1'}", "level": "INFO"}
+{"timestamp": "2025-02-14 09:51:22.497", "message": "{'method': 'GET', 'url': '/favicon.ico', 'status_code': 404, 'client': '127.0.0.1'}", "level": "INFO"}
+{"timestamp": "2025-02-14 09:51:39.591", "message": "{'method': 'GET', 'url': '/favicon.ico', 'status_code': 404, 'client': '127.0.0.1'}", "level": "INFO"}
+{"timestamp": "2025-02-14 09:51:39.775", "message": "{'method': 'GET', 'url': '/favicon.ico', 'status_code': 404, 'client': '127.0.0.1'}", "level": "INFO"}
