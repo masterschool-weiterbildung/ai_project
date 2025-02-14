@@ -1,10 +1,14 @@
 from fastapi import APIRouter, HTTPException, Depends, status
 
+from app.models.user import UserRoles
 from app.schemas.user_profile import UserProfileBase
 from app.models import User, UserProfile
 from app.schemas.user import UserCreate, UserUpdate
+from app.schemas.user_roles import UserRole
 from app.services.user_service import get_user_by_id, service_create_user, \
-    service_delete_user, service_update_user, service_create_user_profile
+    service_delete_user, service_update_user, service_create_user_profile, \
+    service_assign_role
+
 from dependencies import get_current_active_user
 
 router = APIRouter()
@@ -29,7 +33,7 @@ async def create_user(user: UserCreate):
 
 @router.post("/users/profile", response_model=UserProfile,
              status_code=status.HTTP_201_CREATED)
-async def create_user(user_profile: UserProfileBase):
+async def create_user_profile(user_profile: UserProfileBase):
     db_user_profile = service_create_user_profile(user_profile)
     return db_user_profile
 
@@ -51,3 +55,10 @@ async def delete_user(user_id: int,
 async def update_user(user_id: int, user: UserUpdate,
                       current_user: dict = Depends(get_current_active_user)):
     return service_update_user(user_id, user)
+
+
+@router.post("/users/assign_roles", response_model=UserRoles,
+             status_code=status.HTTP_201_CREATED)
+async def user_assign_roles(user_roles: UserRole):
+    db_user_assign_roles = service_assign_role(user_roles)
+    return db_user_assign_roles

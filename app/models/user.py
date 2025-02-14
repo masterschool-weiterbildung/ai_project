@@ -15,6 +15,18 @@ class UserRoles(SQLModel, table=True):
                                 primary_key=True)
 
 
+class RolePermissions(SQLModel, table=True):
+    granted_at: Optional[datetime] = Field(
+        default_factory=lambda: datetime.now(timezone.utc)
+    )
+
+    role_id: int | None = Field(default=None, foreign_key="roles.id",
+                                primary_key=True)
+    permission_id: int | None = Field(default=None,
+                                      foreign_key="permissions.id",
+                                      primary_key=True)
+
+
 class User(SQLModel, table=True):
     id: int | None = Field(default=None, primary_key=True)
     username: str = Field(unique=True, index=True)
@@ -43,3 +55,18 @@ class Roles(SQLModel, table=True):
 
     users: list["User"] = Relationship(back_populates="roles",
                                        link_model=UserRoles)
+
+    permissions: list["Permissions"] = Relationship(back_populates="roles",
+                                                    link_model=RolePermissions)
+
+
+class Permissions(SQLModel, table=True):
+    id: int | None = Field(default=None, primary_key=True)
+    permission_name: str = Field(unique=True, index=True)
+    descriptions: str
+    created_at: Optional[datetime] = Field(
+        default_factory=lambda: datetime.now(timezone.utc)
+    )
+
+    roles: list["Roles"] = Relationship(back_populates="permissions",
+                                        link_model=RolePermissions)

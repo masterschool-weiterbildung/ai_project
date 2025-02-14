@@ -1,32 +1,12 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 
 
-class UserBase(BaseModel):
-    username: str
-    email: str
-    is_active: bool = Field(default=True)
-    is_disabled: bool = Field(default=False)
+class RoleBase(BaseModel):
+    role_name: str = 'nurse'
 
 
-class UserUpdate(BaseModel):
-    is_active: bool = Field(default=False)
-    email: str = None
-
-    class Config:
-        from_attributes = True
-
-
-class UserCreate(UserBase):
-    password_hash: str
-
-class UserCreateRole(UserBase):
-    password_hash: str
-    role: str
-
-
-class User(UserBase):
-    user_id: int
-    password_hash: str
+class Roles(RoleBase):
+    role_id: int
 
     class Config:
         from_attributes = True

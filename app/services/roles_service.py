@@ -2,135 +2,79 @@ from fastapi import HTTPException
 from sqlmodel import select
 
 from app.database import get_session
-from app.models import User, UserProfile
+from app.models import User
 from app.models.user import Roles
-from app.schemas.user import UserCreate, UserUpdate, UserCreateRole
+from app.schemas.roles import RoleBase
 from passlib.context import CryptContext
 from sqlalchemy.exc import IntegrityError
-
-from app.schemas.user_profile import UserProfileBase
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
-def get_user_by_id(user_id: int):
+def service_get_role_by_id(role_id: int):
     with get_session() as session:
-        statement = select(User).where(User.id == user_id)
+        statement = select(Roles).where(Roles.id == role_id)
         results = session.exec(statement)
         return results.first()
 
 
-def get_user_by_username(username: str):
+def service_get_role_by_name(role_name: str):
     with get_session() as session:
-        statement = select(User).where(User.username == username)
+        statement = select(Roles).where(Roles.role_name == role_name)
         results = session.exec(statement)
         return results.first()
 
 
-def service_delete_user(user_id: int):
+def service_create_role(role: RoleBase) -> User:
+    try:
+        db_roles = Roles(
+            role_name=role.role_name,
+        )
+
+        with get_session() as session:
+            session.add(db_roles)
+            session.commit()
+            session.refresh(db_roles)
+            return db_roles
+    except IntegrityError:
+        session.rollback()
+        raise HTTPException(status_code=409,
+                            detail="Role already exists")
+
+
+def service_delete_role(role_id: int):
     with get_session() as session:
-        user = session.get(User, user_id)
-        session.delete(user)
+        role = session.get(Roles, role_id)
+        session.delete(role)
         session.commit()
-        return user
+        return role
 
 
-def service_create_user(user_create: UserCreate) -> User:
-    try:
-        hashed_password = pwd_context.hash(
-            user_create.password_hash)  # Hash password
-
-        db_user = User(
-            username=user_create.username,
-            email=user_create.email,
-            password_hash=hashed_password,
-            is_active=user_create.is_active,
-            is_disabled=user_create.is_disabled
-        )
-
-        with get_session() as session:
-            session.add(db_user)
-            session.commit()
-            session.refresh(db_user)
-            return db_user
-    except IntegrityError:
-        session.rollback()
-        raise HTTPException(status_code=409,
-                            detail="Username or email already exists")
-
-
-def service_create_user_with_role(user_create: UserCreateRole) -> User:
-    try:
-        hashed_password = pwd_context.hash(
-            user_create.password_hash)  # Hash password
-
-        admin_role = Roles(role_name=user_create.role)
-
-        db_user = User(
-            username=user_create.username,
-            email=user_create.email,
-            password_hash=hashed_password,
-            is_active=user_create.is_active,
-            is_disabled=user_create.is_disabled,
-            roles=[admin_role]
-        )
-
-        with get_session() as session:
-            session.add(db_user)
-            session.commit()
-            session.refresh(db_user)
-            return db_user
-    except IntegrityError:
-        session.rollback()
-        raise HTTPException(status_code=409,
-                            detail="Username or email already exists")
-
-
-def service_update_user(user_id: int, user: UserUpdate) -> User:
+def service_update_role(role_id: int, role: RoleBase) -> Roles:
     try:
         with get_session() as session:
-            db_user = session.get(User, user_id)
-        if db_user is None:
-            raise HTTPException(status_code=404, detail="User not found")
+            db_role = session.get(Roles, role_id)
+        if db_role is None:
+            raise HTTPException(status_code=404, detail="Role not found")
 
-        user_data = user.model_dump(exclude_unset=True)
+        user_data = role.model_dump(exclude_unset=True)
         for key, value in user_data.items():
-            setattr(db_user, key, value)
+            setattr(db_role, key, value)
 
         with get_session() as session:
-            session.add(db_user)
+            session.add(db_role)
             session.commit()
-            session.refresh(db_user)
+            session.refresh(db_role)
 
-        return db_user
+        return db_role
     except IntegrityError:
         session.rollback()
         raise HTTPException(status_code=409,
-                            detail="Username or email already exists")
-
-
-def service_create_user_profile(
-        user_create_profile: UserProfileBase):
-    user = get_user_by_id(user_create_profile.user_id)
-
-    if user is None:
-        raise HTTPException(status_code=404,
-                            detail="Username id does not exists")
-
-    db_user_profile = UserProfile(
-        first_name=user_create_profile.first_name,
-        last_name=user_create_profile.last_name,
-        phone_number=user_create_profile.phone_number,
-        address=user_create_profile.address,
-        birth_date=user_create_profile.birth_date,
-        bio=user_create_profile.bio,
-        user_id=user.id
+                            detail="Role already exists")
+def main():
+    r = RoleBase(
+        role_name = "admin"
     )
-    try:
-        with get_session() as session:
-            session.add(db_user_profile)
-            session.commit()
-            session.refresh(db_user_profile)
-            return db_user_profile
-    except IntegrityError:
-        session.rollback()
+    print(service_create_role(r))
+if __name__ == '__main__':
+    main()

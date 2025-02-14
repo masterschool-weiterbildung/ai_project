@@ -3,6 +3,8 @@ from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from jwt.exceptions import InvalidTokenError
 from app.schemas.user import User
+from app.services.user_service import get_user_role, get_role_permission
+from app.utility.constant import PERMISSIONS, ROLES
 from app.utility.env import get_key
 
 import jwt
@@ -12,6 +14,7 @@ from app.utility.jwt import get_user, TokenData
 ALGORITHM = "HS256"
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+
 
 async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]):
     credentials_exception = HTTPException(

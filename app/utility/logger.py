@@ -1,5 +1,8 @@
 import json
+import logfire
 from loguru import logger
+
+logfire.configure()
 
 
 def serialize(record):
@@ -19,7 +22,7 @@ logger.remove(0)
 
 logger = logger.patch(patching)
 logger.add("logs\\loguru.log", format="{extra[serialized]}")
-
+logger.add(logfire.info, format="{message}")
 
 def get_logger():
     return logger
