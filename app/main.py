@@ -1,11 +1,13 @@
 import time
+import logfire
 
 from fastapi import FastAPI, Request
 from fastapi.middleware.gzip import GZipMiddleware
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.routers import auth, public
-from app.routers import protected
+from app.routers import auth, public, protected_roles, protected_permissions
+from app.routers import protected_user
+from app.utility.env import get_logfire_key
 from app.utility.logger import get_logger
 from app.utility.middleware import RateLimitMiddleware
 
@@ -20,12 +22,17 @@ async def shutdown_event():
 
 app = FastAPI(on_startup=[startup_event], on_shutdown=[shutdown_event])
 
+logfire.configure()
+
+logfire.instrument_fastapi(app)
+
 origins = [
     "http://localhost",
     "http://localhost:8080",
 ]
 
 logger = get_logger()
+
 
 # Logging Requests and Responses
 @app.middleware("http")
@@ -68,6 +75,7 @@ async def add_process_time_header(request: Request, call_next):
     response.headers["X-Process-Time"] = str(process_time)
     return response
 
+
 # Custom Header Middleware
 @app.middleware("http")
 async def add_process_time_header(request: Request, call_next):
@@ -76,11 +84,12 @@ async def add_process_time_header(request: Request, call_next):
     return response
 
 
-app.include_router(auth.router)
-app.include_router(protected.router, prefix="/api", tags=["Protected"])
+app.include_router(protected_user.router, prefix="/api",
+                   tags=["Protected Users"])
+app.include_router(protected_roles.router, prefix="/api",
+                   tags=["Protected Roles"])
+app.include_router(auth.router,
+                   tags=["Protected API Keys"])
+app.include_router(protected_permissions.router, prefix="/api",
+                   tags=["Protected Permissions"])
 app.include_router(public.router, prefix="/public", tags=["Public"])
-
-
-@app.get("/")
-async def root():
-    return {"message": "Hello Fastapi"}

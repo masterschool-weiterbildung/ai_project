@@ -19,9 +19,12 @@ class UserUpdate(BaseModel):
 class UserCreate(UserBase):
     password_hash: str
 
-class UserCreateRole(UserBase):
+
+class UserCreateRolePermission(UserBase):
     password_hash: str
     role: str
+    permission: str
+    permission_description: str
 
 
 class User(UserBase):
