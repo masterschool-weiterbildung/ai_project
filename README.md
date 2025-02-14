@@ -23,5 +23,6 @@
 ##### - Process the request or reject it
 ##### - If the key is valid, the request proceeds
 ##### - If the key is invalid, the endpoint returns 401 Unauthorized : The API key validation was unsuccessful.
-![image](https://github.com/user-attachments/assets/c7a1e155-d420-4b82-93bf-59f8fcdf76f0)
+![image](https://github.com/user-attachments/assets/7ca2c75f-603c-40fe-9d10-b55f579057ee)
+
 
