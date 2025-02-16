@@ -25,4 +25,5 @@
 ##### - If the key is invalid, the endpoint returns 401 Unauthorized : The API key validation was unsuccessful.
 ![image](https://github.com/user-attachments/assets/7ca2c75f-603c-40fe-9d10-b55f579057ee)
 
-
+## Resources:
+##### https://lucid.app/lucidchart/17225731-5e2d-43ba-8e75-d1d50cf66608/edit?viewport_loc=-418%2C-449%2C3783%2C1471%2C0_0&invitationId=inv_ccd80c58-1618-464d-a2db-537b8b0d57b1
