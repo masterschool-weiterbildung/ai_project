@@ -19,3 +19,8 @@ def get_logfire_key() -> str:
     load_dotenv()
 
     return os.getenv('LOGFIRE_TOKEN')
+
+def get_open_ai_key() -> str:
+    load_dotenv()
+
+    return os.getenv('OPEN_AI_KEY')

@@ -10,6 +10,11 @@ class ApiKeysBase(BaseModel):
     is_active: bool
 
 
+class ApiKeysVerify(BaseModel):
+    api_key: str
+    user_id: int
+
+
 class ApiKeys(ApiKeysBase):
     api_key_id: int
 

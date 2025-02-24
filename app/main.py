@@ -5,7 +5,8 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.gzip import GZipMiddleware
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.routers import auth, public, protected_roles, protected_permissions
+from app.routers import auth, public, protected_roles, protected_permissions, \
+    protected_nurses
 from app.routers import protected_user
 from app.utility.logger import get_logger
 from app.utility.middleware import RateLimitMiddleware
@@ -33,16 +34,19 @@ origins = [
 logger = get_logger()
 
 
-# Logging Requests and Responses
 @app.middleware("http")
 async def log_requests(request: Request, call_next):
+    start_time = time.perf_counter()
+
     response = await call_next(request)
+    process_time = time.perf_counter() - start_time
 
     logger.info({
         "method": request.method,
         "url": request.url.path,
         "status_code": response.status_code,
         "client": request.client.host,
+        "process_time": process_time
     })
 
     return response
@@ -62,7 +66,7 @@ app.add_middleware(
 )
 
 # Rate Limiting Middleware : Limits the number of requests per user/IP.
-app.add_middleware(RateLimitMiddleware, limit=100)  # 10 requests per client
+app.add_middleware(RateLimitMiddleware, limit=100)  # 100 requests per client
 
 
 # Measures and adds the request processing time to the response headers
@@ -77,7 +81,7 @@ async def add_process_time_header(request: Request, call_next):
 
 # Custom Header Middleware
 @app.middleware("http")
-async def add_process_time_header(request: Request, call_next):
+async def add_custom_header(request: Request, call_next):
     response = await call_next(request)
     response.headers["X-Custom-Header"] = "Hello from AI Backend"
     return response
@@ -85,6 +89,8 @@ async def add_process_time_header(request: Request, call_next):
 
 app.include_router(protected_user.router, prefix="/api",
                    tags=["Protected Users"])
+app.include_router(protected_nurses.router, prefix="/api",
+                   tags=["Protected Nurses"])
 app.include_router(protected_roles.router, prefix="/api",
                    tags=["Protected Roles"])
 app.include_router(auth.router,
