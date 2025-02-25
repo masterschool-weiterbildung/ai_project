@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 def get_key() -> str:
     load_dotenv()
 
+    # openssl rand -hex 32
     return os.getenv('SECRET_KEY')
 
 
@@ -19,6 +20,7 @@ def get_logfire_key() -> str:
     load_dotenv()
 
     return os.getenv('LOGFIRE_TOKEN')
+
 
 def get_open_ai_key() -> str:
     load_dotenv()

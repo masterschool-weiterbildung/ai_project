@@ -44,12 +44,13 @@ def get_nurse_notes_by_patient_id(patient_id: int,
 def get_patient_data(patient_id: int, nurse_id: int):
     with (get_session() as session):
         statement = select(Patients, VitalSigns, VitalMedicalData,
-                           NurseNotes).where(
+                           NurseNotes, Nurses).where(
             Patients.id == patient_id).join(VitalSigns).where(
             VitalSigns.patient_id == patient_id).join(VitalMedicalData).where(
             VitalMedicalData.patient_id == patient_id).join(NurseNotes).where(
             NurseNotes.patient_id == patient_id).where(
-            NurseNotes.nurse_id == nurse_id)
+            NurseNotes.nurse_id == nurse_id).join(Nurses).where(
+            NurseNotes.nurse_id == Nurses.id)
 
         results = session.exec(statement)
         return results.all()
@@ -208,16 +209,16 @@ def service_create_handoffs(handoffs: HandoffsBase) -> Handoffs:
 def service_get_patient_data(patient_id: int, nurse_id: int):
     result = get_patient_data(patient_id, nurse_id);
     for row in result:
-        patient, vital_sign, medical_data, nurse_notes = row
+        patient, vital_sign, medical_data, nurse_notes, nurses = row
 
-    return patient, vital_sign, medical_data, nurse_notes
+    return patient, vital_sign, medical_data, nurse_notes, nurses
 
 
 def main():
-    patient, vital_sign, medical_data, nurse_notes = service_get_patient_data(
+    patient, vital_sign, medical_data, nurse_notes, nurses = service_get_patient_data(
         1, 1);
 
-    print(patient)
+    print(nurses)
 
 
 if __name__ == '__main__':
