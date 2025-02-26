@@ -2,15 +2,15 @@
 ### Purpose
 #### Assist nurses by automating administrative tasks, providing clinical decision support, and enhancing patient care through AI-driven workflows.
 ### Key Functions
-#### - Automate patient handoffs.
-#### - Generate shift summaries.
-#### - Generate draft responses for patient messages
+##### - Automate patient handoffs.
+##### - Generate shift summaries.
+##### - Generate draft responses for patient messages
 ### Technologies
-#### - Frontend: React/Flask for user interface.
-#### - Backend: Python (FastAPI)
-#### - Database: PostgreSQL
-#### - AI: Generative AI models ChatGPT for report generation
-#### - Security: OAuth2 for authentication
+##### - Frontend: React/Flask for user interface.
+##### - Backend: Python (FastAPI)
+##### - Database: PostgreSQL
+##### - AI: Generative AI models ChatGPT for report generation
+##### - Security: OAuth2 for authentication
 ---
 ## How API keys generation works?
 ### Endpoint: /token
