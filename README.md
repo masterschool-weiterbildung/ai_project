@@ -37,7 +37,7 @@
 ##### - The key is stored in api_keys table along with metadata
 ##### - The API key is displayed to the user only once
 ![image](https://github.com/user-attachments/assets/2594dc35-5323-4c89-a0a2-662842ab1d78)
-
+---
 ## How does using an API in a request work?
 ### Endpoint: Any protected endpoint
 ##### - The user includes the API key in their request, HTTP headers:
