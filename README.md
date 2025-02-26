@@ -11,6 +11,23 @@
 ##### - Database: PostgreSQL
 ##### - AI: Generative AI models ChatGPT for report generation
 ##### - Security: OAuth2 for authentication
+
+## What is the process flow of Patient Handoffs?
+### Step 1: Trigger Handoff Process:
+##### - Nurse initiated handoff at shift change or patient transfer.
+##### - System identifies patients assigned to the nurse (query Patients table by nurse_id).
+### Step 2: Data Collection:
+##### - Query VitalSigns, MedicalData, and NurseNotes tables for latest patient data:
+##### - Vital signs: Latest timestamp from VitalSigns (e.g., BP, HR, O2 sat).
+##### - Medical data: Recent entries from MedicalData (e.g., medications, lab results).
+##### - Nurse notes: Relevant updates from NurseNotes (e.g., condition changes).
+### Step 3: AI-Generated Draft Report:
+##### - AI (e.g., ChatGPT) generates draft handoff report using SBAR format:
+##### - Situation: Current patient status (e.g., "Stable, BP 130/80").
+##### - Background: Diagnosis, admission date (from Patients table).
+##### - Assessment: Recent changes (from VitalSigns, MedicalData, NurseNotes).
+##### - Recommendation: Alerts and tasks (e.g., "Monitor respiratory status").
+##### - Store draft in Handoffs table (status = "draft").
 ---
 ## How API keys generation works?
 ### Endpoint: /token
