@@ -7,8 +7,11 @@
 ##### - Generate draft responses for patient messages
 ### Technologies
 ##### - Frontend: React/Flask for user interface.
-##### - Backend: Python (FastAPI)
-##### - ORM: SQLModel
+##### - Backend: Python (FastAPI) -- The motivation is to provide middleware and dependency injection similar to Spring DI, which is reliable for easy backend API implementation and modularization.
+##### - ORM: SQLModel -- The motivation is to provide database relation mapping to PostgreSQL, similar to Java Hibernate, using an object-oriented approach for database query integration.
+##### - Data Validation: Pydantic -- The motivation is to provide a separation of concerns similar to the MVC framework (Java Struts 2), where the Controller and View are responsible for form validation and entity management.
+##### - Application Monitoring Tool : Logfire -- The motivation is to facilitate the easy integration with Operations similar to APM (Appdynamics), particularly for investigation and efficient bug fixing.
+##### - Structured Logging : Loguru -- The motivation is to facilitate the easy integration with Operations particularly with ELK.
 ##### - Database: PostgreSQL
 ##### - AI: Generative AI models ChatGPT for report generation
 ##### - Security: OAuth2 for authentication
