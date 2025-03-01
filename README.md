@@ -8,6 +8,7 @@
 ### Technologies
 ##### - Frontend: React/Flask for user interface.
 ##### - Backend: Python (FastAPI)
+##### - ORM: SQLModel
 ##### - Database: PostgreSQL
 ##### - AI: Generative AI models ChatGPT for report generation
 ##### - Security: OAuth2 for authentication
