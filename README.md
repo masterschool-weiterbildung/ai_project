@@ -15,7 +15,13 @@
 ##### 🟢 Database: PostgreSQL
 ##### 🟢 AI: Generative AI models ChatGPT for report generation
 ##### 🟢 Security: OAuth2 for authentication
-🟢 **Note:** 🟢 Technical Disclaimer: The API key implementation and format are derived from the official documentation. Please refer to the documentation for accuracy and updates. https://fastapi.tiangolo.com/tutorial/security/oauth2-jwt/
+🟢 **Note:** 🟢 Technical Disclaimer: 
+
+###### 🟢 Certain implementations are derived from the official documentation. Please refer to the documentation for accuracy and updates. 
+###### 🟢 https://fastapi.tiangolo.com/tutorial/security/oauth2-jwt/
+###### 🟢 https://sqlmodel.tiangolo.com/](https://sqlmodel.tiangolo.com/tutorial/
+###### 🟢 https://docs.pydantic.dev/latest/api/base_model/
+###### 🟢 https://pydantic.dev/logfire
 
 ## What is the process flow of Patient Handoffs?
 ### Step 1: Trigger Handoff Process:
