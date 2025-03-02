@@ -23,7 +23,7 @@
 ###### https://docs.pydantic.dev/latest/api/base_model/
 ###### https://pydantic.dev/logfire
 
-## What is the process flow of Patient Handoffs?
+## How does the process flow for patient handoffs work?
 ### Step 1: Trigger Handoff Process:
 ##### - Nurse initiated handoff at shift change or patient transfer.
 ##### - System identifies patients assigned to the nurse (query Patients table by nurse_id).
