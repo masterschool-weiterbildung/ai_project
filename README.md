@@ -1,5 +1,45 @@
-# Main Documentation TODO
+## What is Nursing Assistant Application?
+### Purpose
+#### Assist nurses by automating administrative tasks, providing clinical decision support, and enhancing patient care through AI-driven workflows.
+### Key Functions
+##### - Automate patient handoffs.
+##### - Generate shift summaries.
+##### - Generate draft responses for patient messages
+### Technologies
+##### 🟢 Frontend: React/Flask for user interface.
+##### 🟢 Backend: Python (FastAPI) -- The motivation is to provide middleware and dependency injection similar to Spring DI, which is reliable for easy backend API implementation and modularization.
+##### 🟢 ORM: SQLModel -- The motivation is to provide database relation mapping to PostgreSQL, similar to Java Hibernate, using an object-oriented approach for database query integration.
+##### 🟢 Data Validation: Pydantic -- The motivation is to provide a separation of concerns similar to the MVC framework (Java Struts 2), where the Controller and View are responsible for form validation and entity management.
+##### 🟢 Application Monitoring Tool : Logfire -- The motivation is to facilitate the easy integration with Operations similar to APM (Appdynamics), particularly for investigation and efficient bug fixing.
+##### 🟢 Structured Logging : Loguru -- The motivation is to facilitate the easy integration with Operations particularly with ELK.
+##### 🟢 Database: PostgreSQL
+##### 🟢 AI: Generative AI models ChatGPT for report generation
+##### 🟢 Security: OAuth2 for authentication
 
+### Note: Technical Disclaimer: 
+###### Certain implementations are derived from the official documentation. Please refer to the documentation.
+###### https://fastapi.tiangolo.com/tutorial/security/oauth2-jwt/
+###### https://sqlmodel.tiangolo.com/](https://sqlmodel.tiangolo.com/tutorial/
+###### https://docs.pydantic.dev/latest/api/base_model/
+###### https://pydantic.dev/logfire
+
+## How does the process flow for patient handoffs work?
+### Step 1: Trigger Handoff Process:
+##### - Nurse initiated handoff at shift change or patient transfer.
+##### - System identifies patients assigned to the nurse (query Patients table by nurse_id).
+### Step 2: Data Collection:
+##### - Query VitalSigns, MedicalData, and NurseNotes tables for latest patient data:
+##### - Vital signs: Latest timestamp from VitalSigns (e.g., BP, HR, O2 sat).
+##### - Medical data: Recent entries from MedicalData (e.g., medications, lab results).
+##### - Nurse notes: Relevant updates from NurseNotes (e.g., condition changes).
+### Step 3: AI-Generated Draft Report:
+##### - AI (e.g., ChatGPT) generates draft handoff report using SBAR format:
+##### - Situation: Current patient status (e.g., "Stable, BP 130/80").
+##### - Background: Diagnosis, admission date (from Patients table).
+##### - Assessment: Recent changes (from VitalSigns, MedicalData, NurseNotes).
+##### - Recommendation: Alerts and tasks (e.g., "Monitor respiratory status").
+##### - Store draft in Handoffs table (status = "draft").
+---
 ## How API keys generation works?
 ### Endpoint: /token
 ##### - A requests for an API key through endpoint /token
@@ -8,7 +48,7 @@
 ##### - The key is stored in api_keys table along with metadata
 ##### - The API key is displayed to the user only once
 ![image](https://github.com/user-attachments/assets/2594dc35-5323-4c89-a0a2-662842ab1d78)
-
+---
 ## How does using an API in a request work?
 ### Endpoint: Any protected endpoint
 ##### - The user includes the API key in their request, HTTP headers:
