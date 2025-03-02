@@ -1,116 +1,119 @@
-from datetime import datetime
-from pydantic import BaseModel
-
 import openai
 
+from pydantic import BaseModel
+from fastapi import HTTPException
+
+from app.database import get_session
+from app.models.nurses import Handoffs
+from app.schemas.nurses import GenerateSbarBase
 from app.services.nurse_services import service_get_patient_data
+from app.utility.constant import CHAT_GPT, CHAT_GPT_MODEL, STATUS_DRAFT
 from app.utility.env import get_open_ai_key
+from app.utility.others import construct_sbar_report
+from sqlalchemy.exc import IntegrityError
+
+from app.utility.prompt import system_prompt
+from ratelimit import limits, sleep_and_retry
 
 
-def generate_sbar(patient_id: int, nurse_id: int):
-    # if model
-    client = openai.OpenAI(api_key=get_open_ai_key())
+class Situation(BaseModel):
+    patient_name: str
+    mrn: str
+    age: int
+    gender: str
+    room_number: int
+    admission_date: str
+    list_situations_feedback: list[str]
 
-    model = "gpt-4o-mini"
 
-    patient, vital_sign, medical_data, nurse_notes, nurses = service_get_patient_data(
-        patient_id, nurse_id);
+class Background(BaseModel):
+    list_backgrounds: list[str]
 
-    user_prompt = (
-        f"Generate a handoff report using the following: Patient Data : {patient},"
-        f"Vital Signs : {vital_sign}, Medical Data : {medical_data}, Medical Data : {nurse_notes} , "
-        f"Nurse Data : {nurses} ")
 
-    system_prompt = """"
-        You are a nurse preparing a handoff report for the incoming shift. 
-        Your task is to generate a structured SBAR report based on patient data.
-        
-        SBAR stands for Situation, Background, Assessment, and Recommendation. 
-        It’s a standardized communication framework used in healthcare to organize and deliver critical 
-        patient information, especially during handoffs. It ensures that essential details are conveyed clearly, 
-        reducing the risk of miscommunication and improving patient safety. Here’s a detailed breakdown of each component:
-        
-        Situation
-        
-        - Patient identifiers (name, age, room number).
-        - Current vital signs (e.g., blood pressure, heart rate, oxygen levels).
-        - Any urgent issues or changes (e.g., "Patient is experiencing chest pain").
-        
-        Background
-        
-        - Primary diagnosis and reason for admission.
-        - Key medical history (e.g., chronic conditions, allergies).
-        - Recent treatments or interventions (e.g., medications given, procedures done).
-        
-        Assessment
-        
-        - Changes or trends in the patient’s status (e.g., "Symptoms are improving").
-        - Interpretation of data (e.g., "Vital signs are stable but pain persists").
-        - Any concerns or uncertainties (e.g., "Not sure if nausea is medication-related").
-        
-        Recommendation
-        
-        - Monitoring instructions (e.g., "Check vitals every 4 hours").
-        - Alerts (e.g., "Patient is a fall risk").
-        - Follow-up actions (e.g., "Give pain medication at 8 PM").
-        
-        ReportedBy
-        
-        - Nurse Name
-        - License Number
-        - Data and Time
-    """
+class Assessment(BaseModel):
+    list_assessments: list[str]
 
-    class Situation(BaseModel):
-        patient_name: str
-        mrn: str
-        age: int
-        gender: str
-        room_number: int
-        date_time: str
-        list_situations_feedback: list[str]
 
-    class Background(BaseModel):
-        list_backgrounds: list[str]
+class Recommendation(BaseModel):
+    list_recommendations: list[str]
 
-    class Assessment(BaseModel):
-        list_assessments: list[str]
 
-    class Recommendation(BaseModel):
-        list_recommendations: list[str]
+class ReportedBy(BaseModel):
+    nurse: str
+    license_number: str
 
-    class ReportedBy(BaseModel):
-        nurse: str
-        license_number: str
-        date_time: str
 
-    class HandoffReport(BaseModel):
-        situation: Situation
-        background: Background
-        assessment: Assessment
-        recommendation: Recommendation
-        reported_by: ReportedBy
+class HandoffReport(BaseModel):
+    situation: Situation
+    background: Background
+    assessment: Assessment
+    recommendation: Recommendation
+    reported_by: ReportedBy
 
-    response = client.beta.chat.completions.parse(
-        model=model,
 
-        ### SBAR explain in details more data
-        messages=[
-            {"role": "system",
-             "content": f"{system_prompt}"},
-            {"role": "user", "content": f"{user_prompt}"}
-        ],
-        temperature=0,
-        response_format=HandoffReport,
-    )
+@sleep_and_retry
+@limits(calls=1, period=1)
+def generate_sbar(patient_id: int, nurse_id: int, model: str):
+    if model == CHAT_GPT:
+        client = openai.OpenAI(api_key=get_open_ai_key())
 
-    print("Generated text:\n", response.choices[0].message.content)
+        patient, vital_sign, medical_data, nurse_notes, nurses = service_get_patient_data(
+            patient_id, nurse_id)
 
-    return response.choices[0].message.content
+        user_prompt = (
+            f"Generate a handoff report using the following: Patient Data : {patient},"
+            f"Vital Signs : {vital_sign}, Medical Data : {medical_data}, Medical Data : {nurse_notes} , "
+            f"Nurse Data : {nurses} ")
+
+        response = client.beta.chat.completions.parse(
+            model=CHAT_GPT_MODEL,
+            messages=[
+                {"role": "system",
+                 "content": f"{system_prompt}"},
+                {"role": "user", "content": f"{user_prompt}"}
+            ],
+            temperature=0,
+            response_format=HandoffReport,
+        )
+
+        return response.choices[0].message.parsed
+
+
+def service_generate_sbar(sbar: GenerateSbarBase):
+    try:
+        situation, background, assessment, recommendation, reported_by = generate_sbar(
+            sbar.patient_id, sbar.outgoing_nurse_id, sbar.model)
+
+        json_result = construct_sbar_report(situation[1], background[1],
+                                            assessment[1],
+                                            recommendation[1],
+                                            reported_by[1])
+        db_hand_offs = Handoffs(
+            report_text=json_result,
+            status=STATUS_DRAFT,
+            patient_id=sbar.patient_id,
+            outgoing_nurse_id=sbar.outgoing_nurse_id,
+            incoming_nurse_id=sbar.incoming_nurse_id
+        )
+
+        with get_session() as session:
+            session.add(db_hand_offs)
+            session.commit()
+            session.refresh(db_hand_offs)
+        return db_hand_offs
+
+    except IntegrityError:
+        session.rollback()
+        raise HTTPException(status_code=400,
+                            detail="Error adding handoffs")
 
 
 def main():
-    print(generate_sbar(1, 1))
+    situation, background, assessment, recommendation, reported_by = generate_sbar(
+        1, 1)
+
+    print(construct_sbar_report(situation[1], background[1], assessment[1],
+                                recommendation[1], reported_by[1]))
 
 
 if __name__ == '__main__':

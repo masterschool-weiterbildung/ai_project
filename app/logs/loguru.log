@@ -26,3 +26,33 @@
 {"timestamp": "2025-02-14 09:51:22.497", "message": "{'method': 'GET', 'url': '/favicon.ico', 'status_code': 404, 'client': '127.0.0.1'}", "level": "INFO"}
 {"timestamp": "2025-02-14 09:51:39.591", "message": "{'method': 'GET', 'url': '/favicon.ico', 'status_code': 404, 'client': '127.0.0.1'}", "level": "INFO"}
 {"timestamp": "2025-02-14 09:51:39.775", "message": "{'method': 'GET', 'url': '/favicon.ico', 'status_code': 404, 'client': '127.0.0.1'}", "level": "INFO"}
+{"timestamp": "2025-02-24 08:15:07.929", "message": "{'method': 'GET', 'url': '/docs', 'status_code': 200, 'client': '127.0.0.1', 'process_time': 0.06774860000587068}", "level": "INFO"}
+{"timestamp": "2025-02-24 08:15:08.564", "message": "{'method': 'GET', 'url': '/openapi.json', 'status_code': 200, 'client': '127.0.0.1', 'process_time': 0.17491130001144484}", "level": "INFO"}
+{"timestamp": "2025-02-24 08:15:17.299", "message": "{'method': 'GET', 'url': '/api/nurses/1', 'status_code': 401, 'client': '127.0.0.1', 'process_time': 0.03986299999814946}", "level": "INFO"}
+{"timestamp": "2025-02-24 08:15:38.074", "message": "{'method': 'POST', 'url': '/token', 'status_code': 401, 'client': '127.0.0.1', 'process_time': 0.5113451999932295}", "level": "INFO"}
+{"timestamp": "2025-02-24 08:53:10.415", "message": "{'method': 'POST', 'url': '/token', 'status_code': 200, 'client': '127.0.0.1', 'process_time': 0.608554799999979}", "level": "INFO"}
+{"timestamp": "2025-02-24 09:47:27.291", "message": "{'method': 'GET', 'url': '/docs', 'status_code': 200, 'client': '127.0.0.1', 'process_time': 0.029894100000092294}", "level": "INFO"}
+{"timestamp": "2025-02-24 09:47:27.722", "message": "{'method': 'GET', 'url': '/openapi.json', 'status_code': 200, 'client': '127.0.0.1', 'process_time': 0.1286442000000534}", "level": "INFO"}
+{"timestamp": "2025-03-02 20:34:07.352", "message": "{'method': 'GET', 'url': '/docs', 'status_code': 200, 'client': '127.0.0.1', 'process_time': 0.00889159999860567}", "level": "INFO"}
+{"timestamp": "2025-03-02 20:34:08.718", "message": "{'method': 'GET', 'url': '/openapi.json', 'status_code': 200, 'client': '127.0.0.1', 'process_time': 0.7562747000010859}", "level": "INFO"}
+{"timestamp": "2025-03-02 20:40:40.052", "message": "{'method': 'GET', 'url': '/docs', 'status_code': 200, 'client': '127.0.0.1', 'process_time': 0.0028084000005037524}", "level": "INFO"}
+{"timestamp": "2025-03-02 20:40:40.581", "message": "{'method': 'GET', 'url': '/openapi.json', 'status_code': 200, 'client': '127.0.0.1', 'process_time': 0.16709399999672314}", "level": "INFO"}
+{"timestamp": "2025-03-02 20:44:12.346", "message": "{'method': 'GET', 'url': '/docs', 'status_code': 200, 'client': '127.0.0.1', 'process_time': 0.006628099999943515}", "level": "INFO"}
+{"timestamp": "2025-03-02 20:44:12.822", "message": "{'method': 'GET', 'url': '/openapi.json', 'status_code': 200, 'client': '127.0.0.1', 'process_time': 0.1291895000031218}", "level": "INFO"}
+{"timestamp": "2025-03-02 20:44:52.856", "message": "{'method': 'POST', 'url': '/api/generate_sbar/', 'status_code': 201, 'client': '127.0.0.1', 'process_time': 4.6028030999987095}", "level": "INFO"}
+{"timestamp": "2025-03-02 20:54:51.952", "message": "{'method': 'GET', 'url': '/docs', 'status_code': 200, 'client': '127.0.0.1', 'process_time': 0.0033498000011604745}", "level": "INFO"}
+{"timestamp": "2025-03-02 20:54:52.409", "message": "{'method': 'GET', 'url': '/openapi.json', 'status_code': 200, 'client': '127.0.0.1', 'process_time': 0.11025919999883627}", "level": "INFO"}
+{"timestamp": "2025-03-02 20:55:20.115", "message": "{'method': 'POST', 'url': '/api/nurses/', 'status_code': 201, 'client': '127.0.0.1', 'process_time': 0.1778768999975}", "level": "INFO"}
+{"timestamp": "2025-03-02 20:55:39.148", "message": "{'method': 'GET', 'url': '/docs', 'status_code': 200, 'client': '127.0.0.1', 'process_time': 0.0026741000001493376}", "level": "INFO"}
+{"timestamp": "2025-03-02 20:55:39.272", "message": "{'method': 'GET', 'url': '/openapi.json', 'status_code': 200, 'client': '127.0.0.1', 'process_time': 0.0022963999981584493}", "level": "INFO"}
+{"timestamp": "2025-03-02 20:58:11.293", "message": "{'method': 'GET', 'url': '/docs', 'status_code': 200, 'client': '127.0.0.1', 'process_time': 0.002374499999859836}", "level": "INFO"}
+{"timestamp": "2025-03-02 20:58:11.613", "message": "{'method': 'GET', 'url': '/openapi.json', 'status_code': 200, 'client': '127.0.0.1', 'process_time': 0.16654879999987315}", "level": "INFO"}
+{"timestamp": "2025-03-02 21:20:37.247", "message": "{'method': 'GET', 'url': '/docs', 'status_code': 200, 'client': '127.0.0.1', 'process_time': 0.0024378000016440637}", "level": "INFO"}
+{"timestamp": "2025-03-02 21:20:37.709", "message": "{'method': 'GET', 'url': '/openapi.json', 'status_code': 200, 'client': '127.0.0.1', 'process_time': 0.07105640000008862}", "level": "INFO"}
+{"timestamp": "2025-03-02 21:33:44.497", "message": "{'method': 'GET', 'url': '/docs', 'status_code': 200, 'client': '127.0.0.1', 'process_time': 0.0022122000009403564}", "level": "INFO"}
+{"timestamp": "2025-03-02 21:33:45.351", "message": "{'method': 'GET', 'url': '/openapi.json', 'status_code': 200, 'client': '127.0.0.1', 'process_time': 0.3103388999988965}", "level": "INFO"}
+{"timestamp": "2025-03-02 21:37:57.582", "message": "{'method': 'GET', 'url': '/docs', 'status_code': 200, 'client': '127.0.0.1', 'process_time': 0.0029474999973899685}", "level": "INFO"}
+{"timestamp": "2025-03-02 21:37:58.203", "message": "{'method': 'GET', 'url': '/openapi.json', 'status_code': 200, 'client': '127.0.0.1', 'process_time': 0.2905958000010287}", "level": "INFO"}
+{"timestamp": "2025-03-02 21:48:23.730", "message": "{'method': 'GET', 'url': '/docs', 'status_code': 200, 'client': '127.0.0.1', 'process_time': 0.004665599997679237}", "level": "INFO"}
+{"timestamp": "2025-03-02 21:48:24.027", "message": "{'method': 'GET', 'url': '/openapi.json', 'status_code': 200, 'client': '127.0.0.1', 'process_time': 0.12532590000046184}", "level": "INFO"}
+{"timestamp": "2025-03-02 21:49:20.979", "message": "{'method': 'POST', 'url': '/api/generate_sbar/', 'status_code': 201, 'client': '127.0.0.1', 'process_time': 4.218374100000801}", "level": "INFO"}

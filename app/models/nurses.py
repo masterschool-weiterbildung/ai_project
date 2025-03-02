@@ -101,7 +101,7 @@ class Nurses(SQLModel, table=True):
 
 class Handoffs(SQLModel, table=True):
     id: int | None = Field(default=None, primary_key=True)
-    report_text: str
+    report_text: dict = Field(default_factory=dict, sa_column=Column(JSON))
     status: str
 
     created_at: Optional[datetime] = Field(

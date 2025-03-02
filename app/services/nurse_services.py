@@ -218,7 +218,7 @@ def main():
     patient, vital_sign, medical_data, nurse_notes, nurses = service_get_patient_data(
         1, 1);
 
-    print(nurses)
+    print(patient, nurses)
 
 
 if __name__ == '__main__':

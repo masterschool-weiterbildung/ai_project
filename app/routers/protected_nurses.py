@@ -4,7 +4,8 @@ from app.models import Nurses
 from app.models.nurses import Patients, VitalSigns, VitalMedicalData, \
     NurseNotes
 from app.schemas.nurses import NursesBase, PatientsBase, VitalSignsBase, \
-    VitalMedicalDataBase, NurseNotesBase
+    VitalMedicalDataBase, NurseNotesBase, GenerateSbar, GenerateSbarBase
+from app.services.ai_service import HandoffReport, service_generate_sbar
 from app.services.nurse_services import get_nurse_by_id, get_patient_by_id, \
     service_create_nurse, service_create_patient, service_create_vital_signs, \
     service_create_vital_medical, service_create_nurse_note
@@ -66,3 +67,9 @@ async def create_vital_signs(vital_medical: VitalMedicalDataBase):
 async def create_vital_signs(nurse_notes: NurseNotesBase):
     db_nurse_notes = service_create_nurse_note(nurse_notes)
     return db_nurse_notes
+
+
+@router.post("/generate_sbar/", status_code=status.HTTP_201_CREATED)
+async def generate_sbar(generate_sbar: GenerateSbarBase):
+    return_generate_sbar = service_generate_sbar(generate_sbar)
+    return return_generate_sbar

@@ -7,3 +7,10 @@ class PERMISSIONS(Enum):
 
 class ROLES(Enum):
     API_USER = "api_user"
+
+
+CHAT_GPT = "chatgpt"
+CHAT_GPT_MODEL = "gpt-4o-mini"
+
+STATUS_DRAFT = "draft"
+

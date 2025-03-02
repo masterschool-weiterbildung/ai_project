@@ -1,5 +1,5 @@
 from datetime import date, datetime
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class PatientsBase(BaseModel):
@@ -108,6 +108,25 @@ class HandoffsBase(BaseModel):
 
 class Handoffs(HandoffsBase):
     id: int
+
+    class Config:
+        from_attributes = True
+
+
+class GenerateSbarBase(BaseModel):
+    patient_id: int
+    outgoing_nurse_id: int
+    incoming_nurse_id: int
+    model: str = Field(default="chatgpt")
+
+    class Config:
+        from_attributes = True
+
+
+class GenerateSbar(BaseModel):
+    patient_id: int
+    nurse_id: int
+    status: str = Field(default="chatgpt")
 
     class Config:
         from_attributes = True
