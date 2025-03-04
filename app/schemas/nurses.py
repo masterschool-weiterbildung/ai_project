@@ -98,6 +98,7 @@ class Nurses(NursesBase):
 class HandoffsBase(BaseModel):
     report_text: str
     status: str
+    model: str
     patient_id: int
     outgoing_nurse_id: int
     incoming_nurse_id: int

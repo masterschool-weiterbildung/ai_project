@@ -26,3 +26,13 @@ def get_open_ai_key() -> str:
     load_dotenv()
 
     return os.getenv('OPEN_AI_KEY')
+
+def get_gemini_key() -> str:
+    load_dotenv()
+
+    return os.getenv('GEMINI_KEY')
+
+def get_groq_key() -> str:
+    load_dotenv()
+
+    return os.getenv('GROQ_KEY')

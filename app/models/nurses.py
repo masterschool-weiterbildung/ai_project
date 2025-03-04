@@ -103,6 +103,7 @@ class Handoffs(SQLModel, table=True):
     id: int | None = Field(default=None, primary_key=True)
     report_text: dict = Field(default_factory=dict, sa_column=Column(JSON))
     status: str
+    model: str
 
     created_at: Optional[datetime] = Field(
         default_factory=lambda: datetime.now(timezone.utc)
