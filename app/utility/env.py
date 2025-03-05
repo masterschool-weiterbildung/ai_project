@@ -36,3 +36,19 @@ def get_groq_key() -> str:
     load_dotenv()
 
     return os.getenv('GROQ_KEY')
+
+
+def get_open_ai_model() -> str:
+    load_dotenv()
+
+    return os.getenv('OPEN_AI_MODEL')
+
+def get_gemini_model() -> str:
+    load_dotenv()
+
+    return os.getenv('GEMINI_MODEL')
+
+def get_groq_model() -> str:
+    load_dotenv()
+
+    return os.getenv('GROQ_MODEL')

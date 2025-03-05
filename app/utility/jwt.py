@@ -25,14 +25,11 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 def verify_password(plain_password, hashed_password):
     return pwd_context.verify(plain_password, hashed_password)
 
-
 def get_password_hash(password):
     return pwd_context.hash(password)
 
-
 def get_user(username: str) -> User:
     return get_user_by_username(username)
-
 
 def authenticate_user(username: str, password: str):
     user = get_user(username)
@@ -41,7 +38,6 @@ def authenticate_user(username: str, password: str):
     if not verify_password(password, user.password_hash):
         return False
     return user
-
 
 def create_access_token(data: dict, expires_delta: timedelta | None = None):
     to_encode = data.copy()
@@ -52,4 +48,3 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None):
     to_encode.update({"exp": expire})
     encoded_jwt = jwt.encode(to_encode, get_key(), algorithm=ALGORITHM)
     return encoded_jwt
-

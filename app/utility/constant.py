@@ -12,6 +12,5 @@ class ROLES(Enum):
 CHAT_GPT = "chatgpt"
 GEMINI = "gemini"
 GROQ = "groq"
-CHAT_GPT_MODEL = "gpt-4o-mini"
 
 STATUS_DRAFT = "draft"

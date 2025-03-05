@@ -1,3 +1,5 @@
+from datetime import date, datetime, timedelta
+
 from app.database import get_session
 from app.models.nurses import Patients, VitalSigns, VitalMedicalData, \
     NurseNotes, Nurses, Handoffs
@@ -38,22 +40,49 @@ def get_nurse_notes_by_patient_id(patient_id: int,
             NurseNotes.patient_id == patient_id).where(
             NurseNotes.nurse_id == nurse_id)
         results = session.exec(statement)
-        return results.first()
+        return results.all()
 
 
-def get_patient_data(patient_id: int, nurse_id: int):
-    with (get_session() as session):
-        statement = select(Patients, VitalSigns, VitalMedicalData,
-                           NurseNotes, Nurses).where(
-            Patients.id == patient_id).join(VitalSigns).where(
-            VitalSigns.patient_id == patient_id).join(VitalMedicalData).where(
-            VitalMedicalData.patient_id == patient_id).join(NurseNotes).where(
+def get_nurse_notes_by_patient_id_by_shift(patient_id: int,
+                                           nurse_id: int) -> NurseNotes:
+    start_shift = datetime.today() - timedelta(hours=9)
+
+    start_of_day = datetime.combine(start_shift, datetime.min.time())
+
+    end_of_day = datetime.today()
+
+    with get_session() as session:
+        statement = select(NurseNotes).where(
             NurseNotes.patient_id == patient_id).where(
-            NurseNotes.nurse_id == nurse_id).join(Nurses).where(
-            NurseNotes.nurse_id == Nurses.id)
+            NurseNotes.nurse_id == nurse_id).where(
+            NurseNotes.time_stamp >= start_of_day,
+            NurseNotes.time_stamp < end_of_day
+        ).order_by(NurseNotes.time_stamp.desc())
 
         results = session.exec(statement)
         return results.all()
+
+
+def get_latest_handoff(patient_id: int,
+                       nurse_id: int) -> Handoffs:
+    with get_session() as session:
+        statement = select(Handoffs).where(
+            Handoffs.patient_id == patient_id).where(
+            Handoffs.outgoing_nurse_id == nurse_id).order_by(
+            Handoffs.created_at.desc())
+
+        results = session.exec(statement)
+        return results.first()
+
+
+def get_patient_data(patient_id: int):
+    with (get_session() as session):
+        statement = select(Patients, VitalSigns, VitalMedicalData).where(
+            Patients.id == patient_id).join(VitalSigns).where(
+            VitalSigns.patient_id == patient_id).join(VitalMedicalData).where(
+            VitalMedicalData.patient_id == patient_id)
+        results = session.exec(statement)
+        return results.first()
 
 
 def get_nurse_by_id(nurse_id: int) -> Nurses:
@@ -206,19 +235,20 @@ def service_create_handoffs(handoffs: HandoffsBase) -> Handoffs:
                             detail="Error in adding Handoffs")
 
 
-def service_get_patient_data(patient_id: int, nurse_id: int):
-    result = get_patient_data(patient_id, nurse_id);
-    for row in result:
-        patient, vital_sign, medical_data, nurse_notes, nurses = row
-
-    return patient, vital_sign, medical_data, nurse_notes, nurses
+def service_get_patient_data(patient_id: int):
+    return get_patient_data(patient_id)
 
 
 def main():
-    patient, vital_sign, medical_data, nurse_notes, nurses = service_get_patient_data(
-        1, 1);
+    patient, vital_sign, medical_data = service_get_patient_data(1, 1);
 
-    print(patient, nurses)
+    # handoff = get_latest_handoff(1, 1)
+
+    # patient, vital_sign, medical_data = get_patient_data(1, 1)
+
+    # print(handoff.report_text)
+
+    print(patient, vital_sign, medical_data)
 
 
 if __name__ == '__main__':

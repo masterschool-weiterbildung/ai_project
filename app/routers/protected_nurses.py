@@ -70,6 +70,12 @@ async def create_vital_signs(nurse_notes: NurseNotesBase):
 
 
 @router.post("/generate_sbar/", status_code=status.HTTP_201_CREATED)
-async def generate_sbar(generate_sbar: GenerateSbarBase):
-    return_generate_sbar = service_generate_sbar(generate_sbar)
+async def generate_sbar(generate_sbar: GenerateSbarBase = Depends()):
+    return_generate_sbar = service_generate_sbar(generate_sbar, False)
+    return return_generate_sbar
+
+
+@router.post("/re_generate_sbar/", status_code=status.HTTP_201_CREATED)
+async def generate_sbar(generate_sbar: GenerateSbarBase = Depends()):
+    return_generate_sbar = service_generate_sbar(generate_sbar, True)
     return return_generate_sbar

@@ -1,5 +1,8 @@
 from datetime import date, datetime
 from pydantic import BaseModel, Field
+from enum import Enum
+
+from app.utility import constant
 
 
 class PatientsBase(BaseModel):
@@ -114,11 +117,17 @@ class Handoffs(HandoffsBase):
         from_attributes = True
 
 
+class CLIENTS(Enum):
+    CHAT_GPT = constant.CHAT_GPT
+    GEMINI = constant.GEMINI
+    GROQ = constant.GROQ
+
+
 class GenerateSbarBase(BaseModel):
     patient_id: int
     outgoing_nurse_id: int
     incoming_nurse_id: int
-    model: str = Field(default="chatgpt")
+    model: CLIENTS
 
     class Config:
         from_attributes = True
@@ -127,7 +136,7 @@ class GenerateSbarBase(BaseModel):
 class GenerateSbar(BaseModel):
     patient_id: int
     nurse_id: int
-    status: str = Field(default="chatgpt")
+    model: str = Field(default="chatgpt")
 
     class Config:
         from_attributes = True
