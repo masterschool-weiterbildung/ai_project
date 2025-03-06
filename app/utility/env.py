@@ -27,6 +27,11 @@ def get_open_ai_key() -> str:
 
     return os.getenv('OPEN_AI_KEY')
 
+def get_pinecone_key() -> str:
+    load_dotenv()
+
+    return os.getenv('PINECONE_API_KEY')
+
 def get_gemini_key() -> str:
     load_dotenv()
 

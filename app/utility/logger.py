@@ -12,26 +12,17 @@ def serialize(record):
     return json.dumps({
         "timestamp": record["time"].strftime("%Y-%m-%d %H:%M:%S.%f")[:-3],
         "message": record["message"],
-        "level": record["level"].name,
+        "level": record["level"].name
     })
-
 
 def patching(record):
     record["extra"]["serialized"] = serialize(record)
-
 
 logger.remove()
 
 logger = logger.patch(patching)
 
-logger.add(
-    log_path,
-    format="{extra[serialized]}",
-    rotation="10 MB",
-    retention="30 days",
-    compression="zip",
-    diagnose=True,
-    catch=True)
+logger.add(log_path, format="{extra[serialized]}")
 
 logger.add(logfire.info, format="{message}")
 

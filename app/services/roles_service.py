@@ -5,10 +5,7 @@ from app.database import get_session
 from app.models import User
 from app.models.user import Roles
 from app.schemas.roles import RoleBase
-from passlib.context import CryptContext
 from sqlalchemy.exc import IntegrityError
-
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
 def service_get_role_by_id(role_id: int):
@@ -71,10 +68,14 @@ def service_update_role(role_id: int, role: RoleBase) -> Roles:
         session.rollback()
         raise HTTPException(status_code=409,
                             detail="Role already exists")
+
+
 def main():
     r = RoleBase(
-        role_name = "admin"
+        role_name="admin"
     )
     print(service_create_role(r))
+
+
 if __name__ == '__main__':
     main()

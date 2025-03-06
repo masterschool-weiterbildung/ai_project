@@ -19,8 +19,8 @@ from app.utility.env import get_open_ai_key, get_gemini_key, get_groq_key, \
 from app.utility.others import construct_sbar_report
 from sqlalchemy.exc import IntegrityError
 
-from app.utility.prompt import system_prompt, \
-    system_prompt_regeneration_sbar_main, system_prompt_regeneration_sbar_body
+from app.utility.prompt import system_prompt_regeneration_sbar_main, \
+    system_prompt_regeneration_sbar_body, system_prompt_generate
 from ratelimit import limits, sleep_and_retry
 
 
@@ -87,6 +87,8 @@ def generate_sbar(patient_id: int, nurse_id: int, model: str,
             f"\nVital Signs : {vital_sign}, \nMedical Data : {medical_data}, \nNurse Notes : {nurse_notes} , "
             f"Nurse Data : {nurse} ")
 
+        system_prompt = system_prompt_generate
+
     if model == CHAT_GPT:
         client = openai.OpenAI(api_key=get_open_ai_key())
         response = client.beta.chat.completions.parse(
@@ -115,7 +117,7 @@ def generate_sbar(patient_id: int, nurse_id: int, model: str,
                 'response_schema': HandoffReport,
             },
         )
-
+        print(response.parsed)
         return response.parsed
 
     elif model == GROQ:
@@ -148,6 +150,8 @@ def service_generate_sbar(sbar: GenerateSbarBase, is_regenerated: bool):
             sbar.patient_id, sbar.outgoing_nurse_id, sbar.model.value,
             is_regenerated)
 
+        print(situation, background, assessment, recommendation, reported_by)
+
         json_result = construct_sbar_report(situation[1], background[1],
                                             assessment[1],
                                             recommendation[1],
@@ -165,7 +169,7 @@ def service_generate_sbar(sbar: GenerateSbarBase, is_regenerated: bool):
             session.add(db_hand_offs)
             session.commit()
             session.refresh(db_hand_offs)
-        return db_hand_offs
+        return json.loads(json_result)
 
     except IntegrityError:
         session.rollback()
@@ -175,7 +179,7 @@ def service_generate_sbar(sbar: GenerateSbarBase, is_regenerated: bool):
 
 def main():
     situation, background, assessment, recommendation, reported_by = generate_sbar(
-        1, 1, GEMINI, True)
+        1, 1, GEMINI, False)
 
     json_result = construct_sbar_report(situation[1], background[1],
                                         assessment[1],

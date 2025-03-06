@@ -240,7 +240,7 @@ def service_get_patient_data(patient_id: int):
 
 
 def main():
-    patient, vital_sign, medical_data = service_get_patient_data(1, 1);
+    patient, vital_sign, medical_data = service_get_patient_data(1);
 
     # handoff = get_latest_handoff(1, 1)
 

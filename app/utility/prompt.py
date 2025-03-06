@@ -1,4 +1,4 @@
-system_prompt = """"
+system_prompt_generate = """"
     You are a nurse preparing a handoff report for the incoming shift.
     
     Your task is to generate a structured SBAR report based on the Patient Data, 
@@ -53,11 +53,11 @@ system_prompt_regeneration_sbar_main = """"
     The Background section should remain unchanged unless the newly updated Nurse Notes 
     include new information about the patient’s medical history, reason for admission, 
     or recent treatments that are not already captured in the Medical Data. 
-    The ReportedBy section should remain the same, as it identifies the nurse providing the handoff.\n\n
+    The ReportedBy section should remain the same, as it identifies the nurse providing the handoff.\n
 """
 
 system_prompt_regeneration_sbar_body = """
-    \n\nSituation 
+    \nSituation 
 
     - Patient identifiers (name, age, room number). [From Patient Data]
     - Current vital signs (e.g., blood pressure, heart rate, oxygen levels). [From Vital Signs and Medical Data] 

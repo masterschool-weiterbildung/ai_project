@@ -4,7 +4,6 @@ from pathlib import Path
 from app.models import *
 
 from sqlmodel import Session, SQLModel, create_engine
-
 from app.utility.logger import get_logger
 
 logger = get_logger()
