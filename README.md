@@ -3,7 +3,6 @@
 #### Assist nurses by automating administrative tasks, providing clinical decision support, and enhancing patient care through AI-driven workflows.
 ### Key Functions
 ##### - Automate patient handoffs.
-##### - Generate shift summaries.
 ##### - Generate draft responses for patient messages
 ### Technologies
 ##### 🟢 Frontend: React/Flask for user interface.
@@ -19,9 +18,9 @@
 ### Note: Technical Disclaimer: 
 ###### Certain implementations are derived from the official documentation. Please refer to the documentation.
 ###### https://fastapi.tiangolo.com/tutorial/security/oauth2-jwt/
-###### https://sqlmodel.tiangolo.com/](https://sqlmodel.tiangolo.com/tutorial/
+###### https://sqlmodel.tiangolo.com/tutorial/
 ###### https://docs.pydantic.dev/latest/api/base_model/
-###### https://pydantic.dev/logfire
+###### https://logfire.pydantic.dev/docs/integrations/web-frameworks/fastapi/
 
 ## How does the process flow for patient handoffs work?
 ### Step 1: Trigger Handoff Process:
