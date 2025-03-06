@@ -3,7 +3,6 @@
 #### Assist nurses by automating administrative tasks, providing clinical decision support, and enhancing patient care through AI-driven workflows.
 ### Key Functions
 ##### - Automate patient handoffs.
-##### - Generate shift summaries.
 ##### - Generate draft responses for patient messages
 ### Technologies
 ##### 🟢 Frontend: React/Flask for user interface.
