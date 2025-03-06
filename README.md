@@ -18,7 +18,7 @@
 ### Note: Technical Disclaimer: 
 ###### Certain implementations are derived from the official documentation. Please refer to the documentation.
 ###### https://fastapi.tiangolo.com/tutorial/security/oauth2-jwt/
-###### https://sqlmodel.tiangolo.com/](https://sqlmodel.tiangolo.com/tutorial/
+###### https://sqlmodel.tiangolo.com/tutorial/
 ###### https://docs.pydantic.dev/latest/api/base_model/
 ###### https://pydantic.dev/logfire
 
