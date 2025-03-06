@@ -20,7 +20,7 @@
 ###### https://fastapi.tiangolo.com/tutorial/security/oauth2-jwt/
 ###### https://sqlmodel.tiangolo.com/tutorial/
 ###### https://docs.pydantic.dev/latest/api/base_model/
-###### https://pydantic.dev/logfire
+###### https://logfire.pydantic.dev/docs/integrations/web-frameworks/fastapi/
 
 ## How does the process flow for patient handoffs work?
 ### Step 1: Trigger Handoff Process:
