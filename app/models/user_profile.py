@@ -8,6 +8,7 @@ class UserProfile(SQLModel, table=True):
     id: int | None = Field(default=None, primary_key=True)
     first_name: str = Field(nullable=False, index=True)
     last_name: str = Field(nullable=False)
+    sex: str | None = None
     phone_number: str | None = None
     address: str | None = None
     birth_date: date

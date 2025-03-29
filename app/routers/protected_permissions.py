@@ -12,7 +12,7 @@ router = APIRouter()
 
 
 @router.get("/permissions/{permission_id}", response_model=Permissions)
-async def read_permission_by_Id(permission_id: int,
+async def get_permission_by_Id(permission_id: int,
                                 current_user: dict = Depends(
                                     get_current_active_user)):
     db_permission = service_get_permission_by_id(permission_id)
@@ -23,7 +23,7 @@ async def read_permission_by_Id(permission_id: int,
 
 
 @router.get("/permissions/{permission_name}", response_model=Permissions)
-async def read_permission_by_Name(permission_name: str,
+async def get_permission_by_Name(permission_name: str,
                                   current_user: dict = Depends(
                                       get_current_active_user)):
     db_permission = service_get_permission_by_name(permission_name)
@@ -45,7 +45,7 @@ async def create_permission(permission: PermissionBase):
 async def delete_permission(permission_id: int,
                             current_user: dict = Depends(
                                 get_current_active_user)):
-    db_permission = read_permission_by_Id(permission_id)
+    db_permission = get_permission_by_Id(permission_id)
     if db_permission is None:
         raise HTTPException(status_code=404, detail="Permission not found")
     db_permission = service_delete_permission(permission_id)

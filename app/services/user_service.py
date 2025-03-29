@@ -130,6 +130,7 @@ def service_create_user_profile(
     db_user_profile = UserProfile(
         first_name=user_create_profile.first_name,
         last_name=user_create_profile.last_name,
+        sex=user_create_profile.sex,
         phone_number=user_create_profile.phone_number,
         address=user_create_profile.address,
         birth_date=user_create_profile.birth_date,

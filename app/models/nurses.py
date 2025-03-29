@@ -9,6 +9,7 @@ class Patients(SQLModel, table=True):
     id: int | None = Field(default=None, primary_key=True)
     first_name: str = Field(unique=False, index=True)
     last_name: str = Field(unique=False, index=True)
+    sex: str
     birth_date: date
     medical_record_number: str = Field(unique=True, index=True)
     room_number: str

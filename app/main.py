@@ -4,7 +4,7 @@ import logfire
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from app.routers import auth, public, protected_roles, protected_permissions, \
-    protected_nurses
+    protected_nurses, protected_ai
 from app.routers import protected_user
 from app.utility.logger import get_logger
 
@@ -29,6 +29,7 @@ app.add_middleware(
 
 logger = get_logger()
 
+
 @app.middleware("http")
 async def log_requests_and_add_process_time_header(request: Request,
                                                    call_next):
@@ -52,6 +53,8 @@ async def log_requests_and_add_process_time_header(request: Request,
     return response
 
 
+app.include_router(protected_ai.router, prefix="/api",
+                   tags=["Protected AI"])
 app.include_router(protected_user.router, prefix="/api",
                    tags=["Protected Users"])
 app.include_router(protected_nurses.router, prefix="/api",

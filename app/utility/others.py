@@ -30,3 +30,11 @@ def construct_sbar_report(situation,
     }
 
     return json.dumps(report_dict)
+
+
+def construct_question_answer(answer: str) -> json:
+    report_dict = {
+        "answer": answer
+    }
+
+    return json.dumps(report_dict)

@@ -12,5 +12,7 @@ class ROLES(Enum):
 CHAT_GPT = "chatgpt"
 GEMINI = "gemini"
 GROQ = "groq"
+XAI = "xai"
+XAI_BASEURL = "https://api.x.ai/v1"
 
 STATUS_DRAFT = "draft"

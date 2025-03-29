@@ -6,6 +6,7 @@ from typing import Optional
 class UserProfileBase(BaseModel):
     first_name: str
     last_name: str
+    sex: Optional[str] = None
     phone_number: Optional[str] = None
     address: Optional[str] = None
     birth_date: date = None

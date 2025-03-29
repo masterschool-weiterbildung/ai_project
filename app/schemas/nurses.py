@@ -8,6 +8,7 @@ from app.utility import constant
 class PatientsBase(BaseModel):
     first_name: str
     last_name: str
+    sex: str
     birth_date: date = None
     medical_record_number: str
     room_number: str
@@ -121,6 +122,7 @@ class CLIENTS(Enum):
     CHAT_GPT = constant.CHAT_GPT
     GEMINI = constant.GEMINI
     GROQ = constant.GROQ
+    XAI = constant.XAI
 
 
 class GenerateSbarBase(BaseModel):

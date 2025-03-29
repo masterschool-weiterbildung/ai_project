@@ -27,15 +27,22 @@ def get_open_ai_key() -> str:
 
     return os.getenv('OPEN_AI_KEY')
 
+def get_xai_key() -> str:
+    load_dotenv()
+
+    return os.getenv('XAI_API_KEY')
+
 def get_pinecone_key() -> str:
     load_dotenv()
 
     return os.getenv('PINECONE_API_KEY')
 
+
 def get_gemini_key() -> str:
     load_dotenv()
 
     return os.getenv('GEMINI_KEY')
+
 
 def get_groq_key() -> str:
     load_dotenv()
@@ -48,12 +55,25 @@ def get_open_ai_model() -> str:
 
     return os.getenv('OPEN_AI_MODEL')
 
+
 def get_gemini_model() -> str:
     load_dotenv()
 
     return os.getenv('GEMINI_MODEL')
 
+
 def get_groq_model() -> str:
     load_dotenv()
 
     return os.getenv('GROQ_MODEL')
+
+def get_xai_model() -> str:
+    load_dotenv()
+
+    return os.getenv('XAI_MODEL')
+
+
+def get_env_key(name: str) -> str:
+    load_dotenv()
+
+    return os.getenv(name)

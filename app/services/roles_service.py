@@ -2,8 +2,8 @@ from fastapi import HTTPException
 from sqlmodel import select
 
 from app.database import get_session
-from app.models import User
 from app.models.user import Roles
+
 from app.schemas.roles import RoleBase
 from sqlalchemy.exc import IntegrityError
 
@@ -22,7 +22,7 @@ def service_get_role_by_name(role_name: str):
         return results.first()
 
 
-def service_create_role(role: RoleBase) -> User:
+def service_create_role(role: RoleBase) -> Roles:
     try:
         db_roles = Roles(
             role_name=role.role_name,
