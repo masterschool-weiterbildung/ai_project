@@ -15,7 +15,8 @@ from app.services.nurse_services import get_latest_handoff, get_nurse_by_id, \
     get_vital_signs_by_patient_id_by_shift, \
     get_medical_data_by_patient_id_by_shift
 from app.utility.constant import CHAT_GPT, STATUS_DRAFT, \
-    GEMINI, GROQ, XAI, XAI_BASEURL, CHAT_GPT_PRICE_PER_TOKEN, GEMINI_PRICE_PER_TOKEN
+    GEMINI, GROQ, XAI, XAI_BASEURL, CHAT_GPT_PRICE_PER_TOKEN, GEMINI_PRICE_PER_TOKEN, LLAMA_PRICE_PER_TOKEN, \
+    XAI_PRICE_PER_TOKEN
 from app.utility.env import get_open_ai_key, get_gemini_key, get_groq_key, \
     get_groq_model, get_gemini_model, get_open_ai_model, get_xai_key, \
     get_xai_model
@@ -182,11 +183,23 @@ def service_generate_sbar(sbar: GenerateSbarBase, is_regenerated: bool):
         recommendation = response_sbar.recommendation
         reported_by = response_sbar.reported_by
 
-        if sbar.model.value == CHAT_GPT or sbar.model.value == GROQ or sbar.model.value == XAI:
+        if sbar.model.value == CHAT_GPT or sbar.model.value == XAI:
             prompt_tokens = token_usage.prompt_tokens
             completion_tokens = token_usage.completion_tokens
             total_tokens = token_usage.total_tokens
             cost_estimate = total_tokens * CHAT_GPT_PRICE_PER_TOKEN
+
+        elif sbar.model.value == GROQ:
+            prompt_tokens = token_usage.prompt_tokens
+            completion_tokens = token_usage.completion_tokens
+            total_tokens = token_usage.total_tokens
+            cost_estimate = total_tokens * LLAMA_PRICE_PER_TOKEN
+
+        elif sbar.model.value == XAI:
+            prompt_tokens = token_usage.prompt_tokens
+            completion_tokens = token_usage.completion_tokens
+            total_tokens = token_usage.total_tokens
+            cost_estimate = total_tokens * XAI_PRICE_PER_TOKEN
 
         elif sbar.model.value == GEMINI:
             prompt_tokens = token_usage.total_token_count
