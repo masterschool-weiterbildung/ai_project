@@ -15,7 +15,7 @@ from app.services.nurse_services import get_latest_handoff, get_nurse_by_id, \
     get_vital_signs_by_patient_id_by_shift, \
     get_medical_data_by_patient_id_by_shift
 from app.utility.constant import CHAT_GPT, STATUS_DRAFT, \
-    GEMINI, GROQ, XAI, XAI_BASEURL
+    GEMINI, GROQ, XAI, XAI_BASEURL, CHAT_GPT_PRICE_PER_TOKEN, GEMINI_PRICE_PER_TOKEN
 from app.utility.env import get_open_ai_key, get_gemini_key, get_groq_key, \
     get_groq_model, get_gemini_model, get_open_ai_model, get_xai_key, \
     get_xai_model
@@ -72,20 +72,11 @@ def generate_sbar(patient_id: int, nurse_id: int, model: str,
 
     vital_signs = get_vital_signs_by_patient_id_by_shift(patient_id)
 
-    print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++1")
-    print(vital_signs)
-
     medical_data = get_medical_data_by_patient_id_by_shift(patient_id)
-
-    print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++2")
-    print(medical_data)
 
     nurse = get_nurse_by_id(nurse_id)
 
     nurse_notes = get_nurse_notes_by_patient_id_by_shift(patient_id, nurse_id)
-
-    print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++3")
-    print(nurse_notes)
 
     if is_regenerate_sbar:
 
@@ -98,7 +89,6 @@ def generate_sbar(patient_id: int, nurse_id: int, model: str,
 
         system_prompt = system_prompt_regeneration_sbar_main + str(
             hand_off.report_text) + system_prompt_regeneration_sbar_body
-        print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++4 " + system_prompt)
     else:
         user_prompt = (
             f"Generate a SBAR using the following:\n Patient Data : {patient},"
@@ -119,15 +109,13 @@ def generate_sbar(patient_id: int, nurse_id: int, model: str,
             temperature=0,
             response_format=HandoffReport,
         )
-        print(
-            "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++5 ")
-        return response.choices[0].message.parsed
+
+        return response.choices[0].message.parsed, response.usage
 
     # Check for the temperature
     elif model == GEMINI:
         prompt = system_prompt + "\n\n" + user_prompt + "\n\n"
-        print(
-            "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++6 " + prompt)
+
         client = genai.Client(api_key=get_gemini_key())
 
         response = client.models.generate_content(
@@ -138,8 +126,7 @@ def generate_sbar(patient_id: int, nurse_id: int, model: str,
                 'response_schema': HandoffReport,
             },
         )
-
-        return response.parsed
+        return response.parsed, response.usage_metadata
 
     elif model == GROQ:
         client = Groq(api_key=get_groq_key())
@@ -161,10 +148,8 @@ def generate_sbar(patient_id: int, nurse_id: int, model: str,
             stream=False,
             response_format={"type": "json_object"},
         )
-        print(
-            "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++7 ")
-        return HandoffReport.model_validate_json(
-            chat_completion.choices[0].message.content)
+
+        return HandoffReport.model_validate_json(chat_completion.choices[0].message.content), chat_completion.usage
 
     elif model == XAI:
         client = OpenAI(
@@ -182,23 +167,43 @@ def generate_sbar(patient_id: int, nurse_id: int, model: str,
             ],
             response_format=HandoffReport,
         )
-        print(
-            "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++8 ")
-        return completion.choices[0].message.parsed
+        return completion.choices[0].message.parsed, completion.usage
 
 
 def service_generate_sbar(sbar: GenerateSbarBase, is_regenerated: bool):
+    global prompt_tokens, completion_tokens, total_tokens, cost_estimate
     try:
-        situation, background, assessment, recommendation, reported_by = generate_sbar(
-            sbar.patient_id, sbar.outgoing_nurse_id, sbar.model.value,
-            is_regenerated)
+        response_sbar, token_usage = (
+            generate_sbar(sbar.patient_id, sbar.outgoing_nurse_id, sbar.model.value, is_regenerated))
 
-        print(situation, background, assessment, recommendation, reported_by)
+        situation = response_sbar.situation
+        background = response_sbar.background
+        assessment = response_sbar.assessment
+        recommendation = response_sbar.recommendation
+        reported_by = response_sbar.reported_by
 
-        json_result = construct_sbar_report(situation[1], background[1],
-                                            assessment[1],
-                                            recommendation[1],
-                                            reported_by[1])
+        if sbar.model.value == CHAT_GPT or sbar.model.value == GROQ or sbar.model.value == XAI:
+            prompt_tokens = token_usage.prompt_tokens
+            completion_tokens = token_usage.completion_tokens
+            total_tokens = token_usage.total_tokens
+            cost_estimate = total_tokens * CHAT_GPT_PRICE_PER_TOKEN
+
+        elif sbar.model.value == GEMINI:
+            prompt_tokens = token_usage.total_token_count
+            completion_tokens = token_usage.candidates_token_count
+            total_tokens = token_usage.total_token_count
+            cost_estimate = total_tokens * GEMINI_PRICE_PER_TOKEN
+
+        json_result = construct_sbar_report(situation, background,
+                                            assessment,
+                                            recommendation,
+                                            reported_by,
+                                            prompt_tokens,
+                                            completion_tokens,
+                                            total_tokens,
+                                            cost_estimate
+                                            )
+
         db_hand_offs = Handoffs(
             report_text=json_result,
             status=STATUS_DRAFT,
@@ -225,15 +230,16 @@ def service_generate_draft_message_to_patient(message: str):
 
 
 def main():
-    situation, background, assessment, recommendation, reported_by = generate_sbar(
-        1, 1, XAI, False)
+    # situation, background, assessment, recommendation, reported_by = generate_sbar(1, 2, CHAT_GPT, False)
 
-    json_result = construct_sbar_report(situation[1], background[1],
-                                        assessment[1],
-                                        recommendation[1],
-                                        reported_by[1])
+    response_sbar, token_usage = generate_sbar(
+        3, 2, XAI, False)
 
-    print(json_result)
+    print("--------------------------------------------------------------------------------------------------")
+    print(response_sbar)
+    print("--------------------------------------------------------------------------------------------------")
+    print(token_usage)
+    print("--------------------------------------------------------------------------------------------------")
 
 
 if __name__ == '__main__':

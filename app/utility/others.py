@@ -5,7 +5,11 @@ def construct_sbar_report(situation,
                           background,
                           assessment,
                           recommendation,
-                          reported_by) -> json:
+                          reported_by,
+                          prompt_tokens,
+                          completion_tokens,
+                          total_tokens,
+                          cost_estimate) -> json:
     report_dict = {
         "sbar_report": {
             "patient": {
@@ -26,7 +30,13 @@ def construct_sbar_report(situation,
                 "nurse": reported_by.nurse,
                 "license_number": reported_by.license_number
             }
-        }
+        },
+        "token_usage":{
+            "prompt_tokens": prompt_tokens,
+            "completion_tokens": completion_tokens,
+            "total_tokens": total_tokens
+        },
+        "cost_estimate": cost_estimate
     }
 
     return json.dumps(report_dict)
