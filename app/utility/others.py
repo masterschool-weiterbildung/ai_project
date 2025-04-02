@@ -1,5 +1,9 @@
 import json
 
+from app.utility.logger import get_logger
+
+logger = get_logger()
+
 
 def construct_sbar_report(situation,
                           background,
@@ -31,7 +35,7 @@ def construct_sbar_report(situation,
                 "license_number": reported_by.license_number
             }
         },
-        "token_usage":{
+        "token_usage": {
             "prompt_tokens": prompt_tokens,
             "completion_tokens": completion_tokens,
             "total_tokens": total_tokens
@@ -48,3 +52,13 @@ def construct_question_answer(answer: str) -> json:
     }
 
     return json.dumps(report_dict)
+
+
+def get_database_configuration(environment, url, path):
+    try:
+        with open(path, 'r') as config_file:
+            config = json.load(config_file)
+    except (FileNotFoundError, json.JSONDecodeError) as e:
+        logger.error(f"Error loading database configuration: {e}")
+        raise SystemExit(1)
+    return config[environment][url]

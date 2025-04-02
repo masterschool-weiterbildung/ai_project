@@ -1,25 +1,18 @@
 import json
 from contextlib import contextmanager
-from pathlib import Path
 from app.models import *
+from pathlib import Path
 
 from sqlmodel import Session, SQLModel, create_engine
 from app.utility.logger import get_logger
+from app.utility.others import get_database_configuration
 
 logger = get_logger()
 
 db_path = Path(__file__).parent.parent / "config.json"
 
-try:
-    with open(db_path, 'r') as config_file:
-        config = json.load(config_file)
-except (FileNotFoundError, json.JSONDecodeError) as e:
-    logger.error(f"Error loading database configuration: {e}")
-    raise SystemExit(1)
-
-DATABASE_URL = config['database_dev']['url']
-
-engine = create_engine(DATABASE_URL, echo=config['database_dev']['echo'])
+engine = create_engine(get_database_configuration("database_dev", "url", db_path),
+                       echo=get_database_configuration("database_dev", "echo", db_path))
 
 
 def create_db_and_tables():

@@ -3,6 +3,10 @@
     "url": "postgresql://postgres:123456@localhost/postgres",
     "echo": true
   },
+    "database_dev_chatbot": {
+    "url": "postgresql://postgres:123456@localhost/chatbot",
+    "echo": true
+  },
   "database_prod": {
     "url": "postgresql://postgresaidb:123456@localhost/postgres"
   }
