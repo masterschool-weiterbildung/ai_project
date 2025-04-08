@@ -1,3 +1,32 @@
+## AI Project Nursing Assistant Application
+##### This repository contains the backend code for an AI-powered application developed as part of the Masterschool Weiterbildung AI Engineering program. The project provides API endpoints for various AI functionalities, including a chatbot feature leveraging agentic Retrieval-Augmented Generation (RAG). The codebase is structured to support a scalable and maintainable architecture.
+---
+## How to Install?
+To set up the project locally, follow these steps:
+
+1. **Clone the repository**:
+   ```bash
+   git clone git@github.com:masterschool-weiterbildung/ai_project.git
+   ```
+2. **Navigate to the project directory:**:
+   ```bash
+   cd ai_project
+   ```
+3. **Create a virtual environment (recommended for dependency management):**:
+   ```bash
+   python -m venv venv
+   ```
+
+4. **Activate the virtual environment:**:
+   - On Windows:
+   ```bash
+   venv\Scripts\activate
+   ```
+   - On macOS/Linux:
+   ```bash
+   source venv/bin/activate
+   ```
+  
 ## What is Nursing Assistant Application?
 ### Purpose
 #### Assist nurses by automating administrative tasks, providing clinical decision support, and enhancing patient care through AI-driven workflows.
