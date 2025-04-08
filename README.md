@@ -72,6 +72,19 @@ To set up the project locally, follow these steps:
 ##### - Assessment: Recent changes (from VitalSigns, MedicalData, NurseNotes).
 ##### - Recommendation: Alerts and tasks (e.g., "Monitor respiratory status").
 ##### - Store draft in Handoffs table (status = "draft").
+
+## Notable Technologies/Implementations
+
+#### Multi-model system
+- gpt-4o-mini
+- gemini-2.0-flash
+- llama-3.3-70b-versatile
+- grok-2-latest
+
+#### Dynamic Prompting with PostgreSQL
+
+#### Structured Output
+
 ---
 ## How does Chatbot works?
 ### Summary:
@@ -81,6 +94,14 @@ The traditional fine-tuning of LLM to improve performance has limitations.
 - Temporal Limitations: Their training data is static, meaning they are unaware of events or developments occurring after their training cutoff (e.g., ChatGPT-4 has no knowledge of events post-April 2023).
 - LLMs can generate confident but incorrect responses when dealing with unfamiliar topics.
 - Public models do not have access to proprietary or private data.
+
+## Notable Technologies/Implementations
+
+#### Tool Calling
+
+#### Agentic RAG
+
+#### Persestence using Postgresql
 
 ### What is Retrieval-Augmented Generation (RAG), and how does it address the limitations of traditional language models?
 
