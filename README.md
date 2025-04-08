@@ -26,6 +26,11 @@ To set up the project locally, follow these steps:
    ```bash
    source venv/bin/activate
    ```
+5. **Backup Postgresql Database:**:
+   1. Open pgAdmin, right-click the database, and select Backup.
+   2. Create both a new database and a corresponding role/user on the target server.
+   3. Restore the backup to the target database.
+   4. Verify that tables, data, indexes, and constraints are present and correct.
   
 ## What is Nursing Assistant Application?
 ### Purpose
@@ -67,6 +72,63 @@ To set up the project locally, follow these steps:
 ##### - Assessment: Recent changes (from VitalSigns, MedicalData, NurseNotes).
 ##### - Recommendation: Alerts and tasks (e.g., "Monitor respiratory status").
 ##### - Store draft in Handoffs table (status = "draft").
+---
+## How does Chatbot works?
+### Summary:
+The chatbot functionality allows patients to send messages and ask questions about a particular medicine for an ailment or illness. This is a demonstration and prototype designed to showcase Retrieval-Augmented Generation (RAG), which is one of the most efficient and cost-effective ways for companies to build their own AI applications using Large Language Models (LLMs).
+### Background and Motivation:
+The traditional fine-tuning of LLM to improve performance has limitations.
+- Temporal Limitations: Their training data is static, meaning they are unaware of events or developments occurring after their training cutoff (e.g., ChatGPT-4 has no knowledge of events post-April 2023).
+- LLMs can generate confident but incorrect responses when dealing with unfamiliar topics.
+- Public models do not have access to proprietary or private data.
+
+### What is Retrieval-Augmented Generation (RAG), and how does it address the limitations of traditional language models?
+
+<img width="863" alt="Screenshot 2025-04-08 at 20 56 29" src="https://github.com/user-attachments/assets/c2a89bea-f7ff-44cc-a121-35bf541d69b8" />
+
+RAG is presented as an effective solution to address the inherent limitations of LLMs. With RAG:
+
+- Dynamic Knowledge Integration: The model retrieves specific information from a provided set of documents, ensuring accuracy.
+- Reduced Hallucinations: By directly referencing supplied documents, the chance of generating incorrect information is minimized. 
+- Real-Time Updates: The underlying data sources can be updated in real time.
+- Transparency: Responses can include references to the source documents.
+
+The document used in this RAG implementation can be found at: https://github.com/masterschool-weiterbildung/ai_project/tree/main/public/Who%20Essential%20Medicine.pdf
+
+### How RAG Pipeline works?
+
+<img width="978" alt="Screenshot 2025-04-08 at 21 04 33" src="https://github.com/user-attachments/assets/fcbbecfc-7de3-4992-a9d1-327e9aa88419" />
+
+1. Documents are loaded using PyPDFLoader from a PDF file: https://github.com/masterschool-weiterbildung/ai_project/tree/main/public/Who%20Essential%20Medicine.pdf
+2. Text is split into chunks that fit within the LLM’s context window.
+3. Each chunk is embedded into a vector, meaning the text is converted into numerical representations using an embedding model.
+   In this project, the pinecone/multilingual-e5-large embedding model is used.
+   For efficiency, content-based IDs are implemented for each chunk.
+5. Vectors are stored in a searchable vector index. This project uses Pinecone as the vector database.
+
+When the application is active and a user submits an input prompt:
+
+6. User input is embedded using the same embedding model.
+7. Query vector is matched to document vectors to find the most relevant chunks ("top k").
+8. Relevant chunks are added as context to the user’s query.
+9. LLM generates a response based on both the query and context.
+
+This RAG process helps the LLM give more accurate and grounded responses.
+
+### How can we make our chatbot more conversational and implement Agentic RAG?
+
+<img width="231" alt="Screenshot 2025-04-08 at 21 45 08" src="https://github.com/user-attachments/assets/2f059277-1b43-4722-a411-69388b76ae5e" />
+
+1. To make our chatbot more conversational, we need to add memory to store the state of the conversation. We have two options: in-memory storage or using an external database. In our case, we utilized a Postgres checkpointer to provide context of previous interactions
+
+### What is Tool Calling?
+
+Tool calling allows AI models to interact directly with systems like databases or APIs, which require specific input formats. In our case, it’s a vector database.
+
+<img width="900" alt="Screenshot 2025-04-08 at 21 55 31" src="https://github.com/user-attachments/assets/1670a6a8-dc54-41dc-8215-2833b6eab065" />
+
+2. Additionally, we need to incorporate the RAG approach mentioned above as a tool to create Agentic RAG. This enables the AI to take multiple steps in finding the best answer. Instead of performing just one search, it can decide what to look for, retrieve more information if needed, and even ask follow-up questions — all in order to provide smarter and more accurate responses.
+
 ---
 ## How API keys generation works?
 ### Endpoint: /token
