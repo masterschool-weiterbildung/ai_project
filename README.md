@@ -3,7 +3,7 @@
 #### Assist nurses by automating administrative tasks, providing clinical decision support, and enhancing patient care through AI-driven workflows.
 ### Key Functions
 ##### - Automate patient handoffs.
-##### - Generate draft responses for patient messages
+##### - Chatbot for Patient
 ### Technologies
 ##### 🟢 Frontend: React/Flask for user interface.
 ##### 🟢 Backend: Python (FastAPI) -- The motivation is to provide middleware and dependency injection similar to Spring DI, which is reliable for easy backend API implementation and modularization.
