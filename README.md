@@ -146,7 +146,7 @@ This RAG process helps the LLM give more accurate and grounded responses.
 
 Tool calling allows AI models to interact directly with systems like databases or APIs, which require specific input formats. In our case, it’s a vector database.
 
-<img width="900" alt="Screenshot 2025-04-08 at 21 55 31" src="https://github.com/user-attachments/assets/1670a6a8-dc54-41dc-8215-2833b6eab065" />
+<img width="900" alt="Screenshot 2025-04-08 at 21 55 31" src="https://github.com/user-attachments/assets/b0bf1929-4e1f-41af-bd2e-c9058fb729b7" />
 
 2. Additionally, we need to incorporate the RAG approach mentioned above as a tool to create Agentic RAG. This enables the AI to take multiple steps in finding the best answer. Instead of performing just one search, it can decide what to look for, retrieve more information if needed, and even ask follow-up questions — all in order to provide smarter and more accurate responses.
 
