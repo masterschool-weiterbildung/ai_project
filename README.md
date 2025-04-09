@@ -169,7 +169,7 @@ Tool calling allows AI models to interact directly with systems like databases o
 
 - LangSmith is a platform to help developers build, debug, and monitor applications powered by large language models (LLMs). It provides tools for tracing, evaluating, and optimizing LLM workflows.
 
-1. Query Received: The chatbot gets your question and starts processing it in the first "agent" step (0.82 seconds).
+1. Query Received: The chatbot gets the question and starts processing it in the first "agent" step (0.82 seconds).
 2. Decision to Retrieve: The "should_continue" step quickly decides that more information is needed, triggering the "tools" step
 3. Data Retrieval: The "retrieve" step (11.04 seconds) searches for medicines related to African trypanosomiasis, taking the most time due to external data access.
 4. Response Generation: A second "agent" step (3.47 seconds) processes the retrieved data with another model call, likely to organize the information into a coherent answer.
