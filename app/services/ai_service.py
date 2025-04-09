@@ -27,7 +27,7 @@ from app.utility.prompt import system_prompt_regeneration_sbar_main, \
     system_prompt_regeneration_sbar_body, system_prompt_generate
 from ratelimit import limits, sleep_and_retry
 
-from app.utility.rag_qa import generate_draft_message_to_patient
+from app.utility.rag_qa import generate_user_message
 
 
 class Situation(BaseModel):
@@ -172,7 +172,6 @@ def generate_sbar(patient_id: int, nurse_id: int, model: str,
 
 
 def service_generate_sbar(sbar: GenerateSbarBase, is_regenerated: bool):
-    global prompt_tokens, completion_tokens, total_tokens, cost_estimate
     try:
         response_sbar, token_usage = (
             generate_sbar(sbar.patient_id, sbar.outgoing_nurse_id, sbar.model.value, is_regenerated))
@@ -238,8 +237,8 @@ def service_generate_sbar(sbar: GenerateSbarBase, is_regenerated: bool):
                             detail="Error adding handoffs")
 
 
-def service_generate_draft_message_to_patient(message: str):
-    return generate_draft_message_to_patient(message)
+def service_chat_patient(message: str, thread_id: str):
+    return generate_user_message(message, thread_id)
 
 
 def main():

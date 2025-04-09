@@ -5,6 +5,8 @@ import os
 
 from pathlib import Path
 
+from langchain_openai import ChatOpenAI
+
 from app.utility.env import get_env_key, get_open_ai_model
 from app.utility.logger import get_logger
 from app.utility.others import get_database_configuration
@@ -15,7 +17,6 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.document_loaders import PyPDFLoader
 from langchain_pinecone import PineconeVectorStore
 from langchain.chains import create_retrieval_chain
-from langchain.chat_models import init_chat_model
 from langchain_pinecone import PineconeEmbeddings
 from langchain_core.tools import tool
 
@@ -29,7 +30,13 @@ from psycopg_pool import ConnectionPool
 os.environ[
     "OPENAI_API_KEY"] = get_env_key("OPEN_AI_KEY")
 
-llm = init_chat_model(get_open_ai_model(), model_provider="openai")
+llm = ChatOpenAI(
+    model=get_open_ai_model(),
+    temperature=0,
+    max_tokens=None,
+    timeout=None,
+    max_retries=2
+)
 
 graph_builder = StateGraph(MessagesState)
 
@@ -222,7 +229,6 @@ def generate_user_message(input_message, thread_id):
             # Trim to the last MAX_MESSAGES
             initial_messages = trim_messages(initial_messages)
 
-
         # Create agent with checkpointer
         agent_executor = create_react_agent(llm, [retrieve], checkpointer=checkpointer)
 
@@ -246,11 +252,11 @@ def generate_user_message(input_message, thread_id):
 
 def main():
     input_message = (
-        # "What are the other medicine for the illness African trypanosomiasis?"
+        #"What are the other medicine for the illness African trypanosomiasis?"
         "How many milligram do I need to take of the last medicine I ask?"
     )
-    # print(generate_draft_message_to_patient("Hello"))
-    print(generate_user_message(input_message, "j200"))
+    # print(generate_user_message("Hello", "j300"))
+    print(generate_user_message(input_message, "j300"))
 
 
 if __name__ == '__main__':

@@ -142,3 +142,11 @@ class GenerateSbar(BaseModel):
 
     class Config:
         from_attributes = True
+
+
+class ChatBot(BaseModel):
+    message: str
+    thread_id: str
+
+    class Config:
+        from_attributes = True
