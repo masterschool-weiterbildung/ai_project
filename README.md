@@ -113,7 +113,7 @@ The traditional fine-tuning of LLM to improve performance has limitations.
 - pinecone
 - langsmith
 - postgresql
-
+---
 ### What is Retrieval-Augmented Generation (RAG), and how does it address the limitations of traditional language models?
 
 <img width="863" alt="Screenshot 2025-04-08 at 20 56 29" src="https://github.com/user-attachments/assets/c2a89bea-f7ff-44cc-a121-35bf541d69b8" />
@@ -127,6 +127,7 @@ RAG is presented as an effective solution to address the inherent limitations of
 
 The document used in this RAG implementation can be found at: https://github.com/masterschool-weiterbildung/ai_project/tree/main/public/Who%20Essential%20Medicine.pdf
 
+---
 ### How RAG Pipeline works?
 
 <img width="978" alt="Screenshot 2025-04-08 at 21 04 33" src="https://github.com/user-attachments/assets/fcbbecfc-7de3-4992-a9d1-327e9aa88419" />
@@ -146,13 +147,13 @@ When the application is active and a user submits an input prompt:
 9. LLM generates a response based on both the query and context.
 
 This RAG process helps the LLM give more accurate and grounded responses.
-
+---
 ### How can we make our chatbot more conversational and implement Agentic RAG?
 
 <img width="231" alt="Screenshot 2025-04-08 at 21 45 08" src="https://github.com/user-attachments/assets/2f059277-1b43-4722-a411-69388b76ae5e" />
 
 1. To make our chatbot more conversational, we need to add memory to store the state of the conversation. We have two options: in-memory storage or using an external database. In our case, we utilized a Postgres checkpointer to provide context of previous interactions
-
+---
 ### What is Tool Calling?
 
 Tool calling allows AI models to interact directly with systems like databases or APIs, which require specific input formats. In our case, it’s a vector database.
@@ -160,6 +161,18 @@ Tool calling allows AI models to interact directly with systems like databases o
 <img width="900" alt="Screenshot 2025-04-08 at 21 55 31" src="https://github.com/user-attachments/assets/b0bf1929-4e1f-41af-bd2e-c9058fb729b7" />
 
 2. Additionally, we need to incorporate the RAG approach mentioned above as a tool to create Agentic RAG. This enables the AI to take multiple steps in finding the best answer. Instead of performing just one search, it can decide what to look for, retrieve more information if needed, and even ask follow-up questions — all in order to provide smarter and more accurate responses.
+---
+### What tools and methods can we use to monitor and trace our chatbot application?
+
+<img width="1388" alt="Screenshot 2025-04-09 at 19 39 51" src="https://github.com/user-attachments/assets/3f6908f6-12f6-40f9-a873-f16b90d1058a" />
+
+- LangSmith is a platform to help developers build, debug, and monitor applications powered by large language models (LLMs). It provides tools for tracing, evaluating, and optimizing LLM workflows.
+
+1. Query Received: The chatbot gets your question and starts processing it in the first "agent" step (0.82 seconds).
+2. Decision to Retrieve: The "should_continue" step quickly decides that more information is needed, triggering the "tools" step
+3. Data Retrieval: The "retrieve" step (11.04 seconds) searches for medicines related to African trypanosomiasis, taking the most time due to external data access.
+4. Response Generation: A second "agent" step (3.47 seconds) processes the retrieved data with another model call, likely to organize the information into a coherent answer.
+5. Completion: The final "should_continue" step confirms the process is done for this stage, and the trace ends successfully.
 
 ---
 ## How API keys generation works?
