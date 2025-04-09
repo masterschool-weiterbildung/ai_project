@@ -147,6 +147,7 @@ When the application is active and a user submits an input prompt:
 9. LLM generates a response based on both the query and context.
 
 This RAG process helps the LLM give more accurate and grounded responses.
+
 ---
 ### How can we make our chatbot more conversational and implement Agentic RAG?
 
