@@ -73,7 +73,7 @@ To set up the project locally, follow these steps:
 ##### - Recommendation: Alerts and tasks (e.g., "Monitor respiratory status").
 ##### - Store draft in Handoffs table (status = "draft").
 
-## Notable Technologies/Implementations
+## Notable Implementations
 
 #### Multi-model system
 - gpt-4o-mini
@@ -85,6 +85,10 @@ To set up the project locally, follow these steps:
 
 #### Structured Output
 
+## Technology Stack
+- fastapi
+- sqlmodel
+- pydantic model
 ---
 ## How does Chatbot works?
 ### Summary:
@@ -102,6 +106,13 @@ The traditional fine-tuning of LLM to improve performance has limitations.
 #### Agentic RAG
 
 #### Persestence using Postgresql
+
+## Technology Stack
+- langchain
+- langgraph
+- pinecone
+- langsmith
+- postgresql
 
 ### What is Retrieval-Augmented Generation (RAG), and how does it address the limitations of traditional language models?
 
