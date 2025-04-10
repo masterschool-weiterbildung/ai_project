@@ -46,7 +46,7 @@ To set up the project locally, follow these steps:
 ##### 🟢 Application Monitoring Tool : Logfire -- The motivation is to facilitate the easy integration with Operations similar to APM (Appdynamics), particularly for investigation and efficient bug fixing.
 ##### 🟢 Structured Logging : Loguru -- The motivation is to facilitate the easy integration with Operations particularly with ELK.
 ##### 🟢 Database: PostgreSQL
-##### 🟢 AI: Generative AI models ChatGPT for report generation
+##### 🟢 AI: Generative AI models for report generation
 ##### 🟢 Security: OAuth2 for authentication
 
 ### Note: Technical Disclaimer: 
