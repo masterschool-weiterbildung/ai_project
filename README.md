@@ -1,6 +1,7 @@
 ## AI Project Nursing Assistant Application
 ##### This repository contains the backend code for an AI-powered application developed as part of the Masterschool Weiterbildung AI Engineering program. The project provides API endpoints for various AI functionalities, including a chatbot feature leveraging agentic Retrieval-Augmented Generation (RAG). The codebase is structured to support a scalable and maintainable architecture.
 ---
+
 ## How to Install?
 To set up the project locally, follow these steps:
 
@@ -31,7 +32,9 @@ To set up the project locally, follow these steps:
    2. Create both a new database and a corresponding role/user on the target server.
    3. Restore the backup to the target database.
    4. Verify that tables, data, indexes, and constraints are present and correct.
-  
+
+---
+
 ## What is Nursing Assistant Application?
 ### Purpose
 #### Assist nurses by automating administrative tasks, providing clinical decision support, and enhancing patient care through AI-driven workflows.
@@ -55,6 +58,8 @@ To set up the project locally, follow these steps:
 ###### https://sqlmodel.tiangolo.com/tutorial/
 ###### https://docs.pydantic.dev/latest/api/base_model/
 ###### https://logfire.pydantic.dev/docs/integrations/web-frameworks/fastapi/
+
+---
 
 ## How does the process flow for patient handoffs work?
 ### Step 1: Trigger Handoff Process:
@@ -89,7 +94,10 @@ To set up the project locally, follow these steps:
 - fastapi
 - sqlmodel
 - pydantic model
+
+
 ---
+
 ## How does Chatbot works?
 ### Summary:
 The chatbot functionality allows patients to send messages and ask questions about a particular medicine for an ailment or illness. This is a demonstration and prototype designed to showcase Retrieval-Augmented Generation (RAG), which is one of the most efficient and cost-effective ways for companies to build their own AI applications using Large Language Models (LLMs).
@@ -113,7 +121,9 @@ The traditional fine-tuning of LLM to improve performance has limitations.
 - pinecone
 - langsmith
 - postgresql
+
 ---
+
 ### What is Retrieval-Augmented Generation (RAG), and how does it address the limitations of traditional language models?
 
 <img width="863" alt="Screenshot 2025-04-08 at 20 56 29" src="https://github.com/user-attachments/assets/c2a89bea-f7ff-44cc-a121-35bf541d69b8" />
@@ -128,6 +138,7 @@ RAG is presented as an effective solution to address the inherent limitations of
 The document used in this RAG implementation can be found at: https://github.com/masterschool-weiterbildung/ai_project/tree/main/public/Who%20Essential%20Medicine.pdf
 
 ---
+
 ### How RAG Pipeline works?
 
 <img width="978" alt="Screenshot 2025-04-08 at 21 04 33" src="https://github.com/user-attachments/assets/fcbbecfc-7de3-4992-a9d1-327e9aa88419" />
@@ -149,12 +160,15 @@ When the application is active and a user submits an input prompt:
 This RAG process helps the LLM give more accurate and grounded responses.
 
 ---
+
 ### How can we make our chatbot more conversational and implement Agentic RAG?
 
 <img width="231" alt="Screenshot 2025-04-08 at 21 45 08" src="https://github.com/user-attachments/assets/2f059277-1b43-4722-a411-69388b76ae5e" />
 
 1. To make our chatbot more conversational, we need to add memory to store the state of the conversation. We have two options: in-memory storage or using an external database. In our case, we utilized a Postgres checkpointer to provide context of previous interactions
+
 ---
+
 ### What is Tool Calling?
 
 Tool calling allows AI models to interact directly with systems like databases or APIs, which require specific input formats. In our case, it’s a vector database.
@@ -175,7 +189,9 @@ Tool calling allows AI models to interact directly with systems like databases o
 4. Response Generation: A second "agent" step (3.47 seconds) processes the retrieved data with another model call, likely to organize the information into a coherent answer.
 5. Completion: The final "should_continue" step confirms the process is done for this stage, and the trace ends successfully.
 
+
 ---
+
 ## How API keys generation works?
 ### Endpoint: /token
 ##### - A requests for an API key through endpoint /token
@@ -184,7 +200,9 @@ Tool calling allows AI models to interact directly with systems like databases o
 ##### - The key is stored in api_keys table along with metadata
 ##### - The API key is displayed to the user only once
 ![image](https://github.com/user-attachments/assets/2594dc35-5323-4c89-a0a2-662842ab1d78)
+
 ---
+
 ## How does using an API in a request work?
 ### Endpoint: Any protected endpoint
 ##### - The user includes the API key in their request, HTTP headers:
