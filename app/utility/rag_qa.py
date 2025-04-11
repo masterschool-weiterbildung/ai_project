@@ -6,6 +6,7 @@ import os
 from pathlib import Path
 
 from langchain_openai import ChatOpenAI
+from langsmith import utils
 
 from app.utility.env import get_env_key, get_open_ai_model
 from app.utility.logger import get_logger
@@ -42,22 +43,18 @@ graph_builder = StateGraph(MessagesState)
 
 logger = get_logger()
 
+# Set environment for Langsmith
+os.environ[
+    "LANGSMITH_ENDPOINT"] = "https://api.smith.langchain.com"
+os.environ["LANGSMITH_TRACING"] = "true"
+os.environ[
+    "LANGSMITH_API_KEY"] = get_env_key("LANGSMITH_API_KEY")
+os.environ["LANGSMITH_PROJECT"] = "chatbot"
 
 def set_pinecone_open_ai_environment():
     # Set environment key for pinecone and openai
     os.environ[
         "PINECONE_API_KEY"] = get_env_key("PINECONE_API_KEY")
-
-
-def set_langsmith_environment():
-    # Set environment for Langsmith
-    os.environ[
-        "LANGSMITH_ENDPOINT"] = "https://api.smith.langchain.com"
-    os.environ["LANGSMITH_TRACING"] = "true"
-    os.environ[
-        "LANGSMITH_API_KEY"] = get_env_key("LANGSMITH_API_KEY")
-    os.environ["LANGSMITH_PROJECT"] = "nursingassistant"
-
 
 """
     RAG 1st component : 
@@ -171,8 +168,6 @@ def retrieve(query: str):
     # Setup up the environments
     set_pinecone_open_ai_environment()
 
-    set_langsmith_environment()
-
     # Indexing
     documents = load_pdf_files()
 
@@ -195,6 +190,25 @@ def retrieve(query: str):
     )
     return serialized, retrieved_docs
 
+def rag_evaluation():
+    # Setup up the environments
+    set_pinecone_open_ai_environment()
+
+    # Indexing
+    documents = load_pdf_files()
+
+    split_documents = split_documents_chunks(documents)
+
+    ids = generate_content_based_ids(split_documents)
+
+    embeddings = init_embeddings()
+
+    index_name, namespace = init_pinecone_set_serverless_spec(embeddings)
+
+    vector_store = upload_documents_with_ids_to_pinecone(embeddings, ids,
+                                                         index_name, namespace,
+                                                         split_documents)
+    return vector_store.as_retriever(k=6)
 
 MAX_MESSAGES = 5
 
@@ -252,11 +266,13 @@ def generate_user_message(input_message, thread_id):
 
 def main():
     input_message = (
-        #"What are the other medicine for the illness African trypanosomiasis?"
-        "How many milligram do I need to take of the last medicine I ask?"
+        "What are the inflammatory medicines?"
+        #"How many milligram do I need to take of the last medicine I ask?"
     )
     # print(generate_user_message("Hello", "j300"))
-    print(generate_user_message(input_message, "j300"))
+    print(generate_user_message(input_message, "patient_1_001"))
+
+    print(utils.tracing_is_enabled())
 
 
 if __name__ == '__main__':
