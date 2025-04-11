@@ -4,7 +4,7 @@ from datetime import datetime
 from langchain_openai import ChatOpenAI
 from langsmith import traceable
 
-from app.evaluation.prompt import correctness_instructions, relevance_instructions, grounded_instructions, \
+from tests.prompt import correctness_instructions, relevance_instructions, grounded_instructions, \
     retrieval_relevance_instructions
 from app.utility.env import get_env_key, get_open_ai_model
 from app.utility.rag_qa import rag_evaluation

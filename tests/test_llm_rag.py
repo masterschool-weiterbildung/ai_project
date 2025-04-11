@@ -4,14 +4,15 @@ from datetime import datetime
 from langchain_openai import ChatOpenAI
 from langsmith import traceable
 
-from app.evaluation.prompt import correctness_instructions, relevance_instructions, grounded_instructions, \
-    retrieval_relevance_instructions
 from app.utility.env import get_env_key, get_open_ai_model
 from app.utility.rag_qa import rag_evaluation
 
 from langsmith import Client
 
 from typing_extensions import Annotated, TypedDict
+
+from tests.prompt import correctness_instructions, relevance_instructions, grounded_instructions, \
+    retrieval_relevance_instructions
 
 os.environ["LANGSMITH_TRACING"] = "true"
 os.environ["LANGSMITH_API_KEY"] = get_env_key("LANGSMITH_API_KEY")
