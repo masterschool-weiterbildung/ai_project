@@ -176,7 +176,9 @@ Tool calling allows AI models to interact directly with systems like databases o
 <img width="900" alt="Screenshot 2025-04-08 at 21 55 31" src="https://github.com/user-attachments/assets/b0bf1929-4e1f-41af-bd2e-c9058fb729b7" />
 
 2. Additionally, we need to incorporate the RAG approach mentioned above as a tool to create Agentic RAG. This enables the AI to take multiple steps in finding the best answer. Instead of performing just one search, it can decide what to look for, retrieve more information if needed, and even ask follow-up questions — all in order to provide smarter and more accurate responses.
+
 ---
+
 ### What tools and methods can we use to monitor and trace our chatbot application?
 
 <img width="1388" alt="Screenshot 2025-04-09 at 19 39 51" src="https://github.com/user-attachments/assets/3f6908f6-12f6-40f9-a873-f16b90d1058a" />
@@ -189,6 +191,32 @@ Tool calling allows AI models to interact directly with systems like databases o
 4. Response Generation: A second "agent" step (3.47 seconds) processes the retrieved data with another model call, likely to organize the information into a coherent answer.
 5. Completion: The final "should_continue" step confirms the process is done for this stage, and the trace ends successfully.
 
+
+---
+
+### How can we quantitatively measure the performance of agentic RAG?
+
+Evaluations provide a quantitative method for assessing the performance of LLM applications, which is crucial since LLMs can be unpredictable—minor alterations in prompts, models, or inputs may lead to substantial changes in outcomes.
+
+
+<img width="853" alt="Screenshot 2025-04-11 at 10 19 32" src="https://github.com/user-attachments/assets/da9b815d-3da5-4f6c-b2c5-491faefff2c3" />
+
+1. Correctness: Response vs reference answer
+   - Goal: Measure "how similar/correct is the RAG chain answer, relative to a ground-truth answer"
+   - Mode: Requires a ground truth (reference) answer supplied through a dataset
+   - Evaluator: Use LLM-as-judge to assess answer correctness.
+2. Relevance: Response vs input
+   - Goal: Measure "how well does the generated response address the initial user input"
+   - Mode: Does not require reference answer, because it will compare the answer to the input question
+   - valuator: Use LLM-as-judge to assess answer relevance, helpfulness, etc.
+3. Groundedness: Response vs retrieved docs
+   - Goal: Measure "to what extent does the generated response agree with the retrieved context"
+   - Mode: Does not require reference answer, because it will compare the answer to the retrieved context
+   - Evaluator: Use LLM-as-judge to assess faithfulness, hallucinations, etc.
+4. Retrieval relevance: Retrieved docs vs input
+   - Goal: Measure "how relevant are my retrieved results for this query"
+   - Mode: Does not require reference answer, because it will compare the question to the retrieved context
+   - Evaluator: Use LLM-as-judge to assess relevance
 
 ---
 
