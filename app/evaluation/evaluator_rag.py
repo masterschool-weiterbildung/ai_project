@@ -1,4 +1,5 @@
 import os
+from datetime import datetime
 
 from langchain_openai import ChatOpenAI
 from langsmith import traceable
@@ -71,7 +72,7 @@ examples = [
 client = Client()
 
 # Create the dataset and examples in LangSmith
-dataset_name = "Nurse Assistant Dataset1"
+dataset_name = "Nurse Assistant Dataset - " + str(datetime.now())
 dataset = client.create_dataset(dataset_name=dataset_name)
 client.create_examples(
     dataset_id=dataset.id,
