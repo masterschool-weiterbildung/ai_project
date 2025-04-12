@@ -201,6 +201,9 @@ Evaluations provide a quantitative method for assessing the performance of LLM a
 
 <img width="853" alt="Screenshot 2025-04-11 at 10 19 32" src="https://github.com/user-attachments/assets/da9b815d-3da5-4f6c-b2c5-491faefff2c3" />
 
+<img width="1396" alt="Screenshot 2025-04-12 at 09 37 09" src="https://github.com/user-attachments/assets/63105ae0-8132-44fd-bdf5-f7e2f2bc3b92" />
+
+
 1. Correctness: Response vs reference answer
    - Goal: Measure "how similar/correct is the RAG chain answer, relative to a ground-truth answer"
    - Mode: Requires a ground truth (reference) answer supplied through a dataset
