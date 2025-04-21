@@ -42,7 +42,6 @@ To set up the project locally, follow these steps:
 ##### - Automate patient handoffs.
 ##### - Chatbot for Patient
 ### Technologies
-##### 🟢 Frontend: React/Flask for user interface.
 ##### 🟢 Backend: Python (FastAPI) -- The motivation is to provide middleware and dependency injection similar to Spring DI, which is reliable for easy backend API implementation and modularization.
 ##### 🟢 ORM: SQLModel -- The motivation is to provide database relation mapping to PostgreSQL, similar to Java Hibernate, using an object-oriented approach for database query integration.
 ##### 🟢 Data Validation: Pydantic -- The motivation is to provide a separation of concerns similar to the MVC framework (Java Struts 2), where the Controller and View are responsible for form validation and entity management.
