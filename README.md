@@ -61,6 +61,9 @@ To set up the project locally, follow these steps:
 ---
 
 ## How does the process flow for patient handoffs work?
+
+<img width="915" alt="Screenshot 2025-04-21 at 20 04 51" src="https://github.com/user-attachments/assets/8d591ab4-e1b9-46e8-9014-89cd7757bf05" />
+
 ### Step 1: Trigger Handoff Process:
 ##### - Nurse initiated handoff at shift change or patient transfer.
 ##### - System identifies patients assigned to the nurse (query Patients table by nurse_id).
