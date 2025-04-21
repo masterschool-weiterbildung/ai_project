@@ -8,6 +8,7 @@ from pathlib import Path
 from langchain_openai import ChatOpenAI
 from langsmith import utils
 
+from app.utility.constant import MAX_MESSAGES
 from app.utility.env import get_env_key, get_open_ai_model
 from app.utility.logger import get_logger
 from app.utility.others import get_database_configuration
@@ -58,7 +59,7 @@ def set_pinecone_open_ai_environment():
 
 """
     RAG 1st component : 
-        (1) Indexing: a pipeline for ingesting data from a source and indexing it. This usually happens offline.
+        (1) Indexing: a pipeline for ingesting data from a source and indexing it.
 """
 
 """
@@ -108,6 +109,13 @@ def init_embeddings():
     embeddings = PineconeEmbeddings(model=model_name)
     return embeddings
 
+"""
+    Generating content based ids has the following advantages:
+    1. If the same content appears in multiple chunks, they will share the same ID
+    2. Hash-based IDs allow quick comparisons between chunks without needing to compare the full text.
+    3. IDs can serve as keys to associate chunks with their embeddings or metadata
+    4. If a chunk’s content changes, its ID will change
+"""
 
 def generate_content_based_ids(split_documents):
     # Generate content-based IDs for each chunk
@@ -208,10 +216,7 @@ def rag_evaluation():
     vector_store = upload_documents_with_ids_to_pinecone(embeddings, ids,
                                                          index_name, namespace,
                                                          split_documents)
-    return vector_store.as_retriever(k=6)
-
-MAX_MESSAGES = 5
-
+    return vector_store.as_retriever(k=2)
 
 def trim_messages(messages):
     if len(messages) > MAX_MESSAGES:
@@ -270,7 +275,7 @@ def main():
         #"How many milligram do I need to take of the last medicine I ask?"
     )
     # print(generate_user_message("Hello", "j300"))
-    print(generate_user_message(input_message, "patient_1_001"))
+    print(generate_user_message(input_message, "patient_1_002"))
 
     print(utils.tracing_is_enabled())
 
