@@ -198,6 +198,8 @@ Tool calling allows AI models to interact directly with systems like databases o
 
 ### How can we quantitatively measure the performance of agentic RAG?
 
+**Langsmith Evals**
+
 Evaluations provide a quantitative method for assessing the performance of LLM applications, which is crucial since LLMs can be unpredictable—minor alterations in prompts, models, or inputs may lead to substantial changes in outcomes.
 
 
@@ -222,6 +224,10 @@ Evaluations provide a quantitative method for assessing the performance of LLM a
    - Goal: Measure "how relevant are my retrieved results for this query"
    - Mode: Does not require reference answer, because it will compare the question to the retrieved context
    - Evaluator: Use LLM-as-judge to assess relevance
+
+**(Retrieval, Generation, Additional Requirement) framework using RAGAs**
+
+<img width="774" alt="Screenshot 2025-05-18 at 23 54 44" src="https://github.com/user-attachments/assets/61dc45ac-3bbd-4334-a86b-467467deccf8" />
 
 ---
 
