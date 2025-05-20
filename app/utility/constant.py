@@ -23,3 +23,8 @@ XAI_PRICE_PER_TOKEN = 0.00002
 STATUS_DRAFT = "draft"
 
 MAX_MESSAGES = 5
+
+INDEX_NAME = "nursingassistant"
+NAMESPACE = "nursing"
+
+

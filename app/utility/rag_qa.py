@@ -5,10 +5,13 @@ import os
 
 from pathlib import Path
 
+from langchain.retrievers import ContextualCompressionRetriever
+from langchain.retrievers.document_compressors import CrossEncoderReranker
+from langchain_community.cross_encoders import HuggingFaceCrossEncoder
 from langchain_openai import ChatOpenAI
 from langsmith import utils
 
-from app.utility.constant import MAX_MESSAGES
+from app.utility.constant import MAX_MESSAGES, INDEX_NAME, NAMESPACE
 from app.utility.env import get_env_key, get_open_ai_model
 from app.utility.logger import get_logger
 from app.utility.others import get_database_configuration
@@ -20,6 +23,7 @@ from langchain_community.document_loaders import PyPDFLoader
 from langchain_pinecone import PineconeVectorStore
 from langchain.chains import create_retrieval_chain
 from langchain_pinecone import PineconeEmbeddings
+from langchain_pinecone import PineconeRerank
 from langchain_core.tools import tool
 
 from langgraph.graph import StateGraph
@@ -131,19 +135,17 @@ def init_pinecone_set_serverless_spec(embeddings):
     cloud = os.environ.get('PINECONE_CLOUD') or 'aws'
     region = os.environ.get('PINECONE_REGION') or 'us-east-1'
     spec = ServerlessSpec(cloud=cloud, region=region)
-    index_name = "nursingassistant"
-    namespace = "nursing"
-    if index_name not in pc.list_indexes().names():
+    if INDEX_NAME not in pc.list_indexes().names():
         pc.create_index(
-            name=index_name,
+            name=INDEX_NAME,
             dimension=embeddings.dimension,
             metric="cosine",
             spec=spec
         )
         # Wait for index to be ready
-        while not pc.describe_index(index_name).status['ready']:
+        while not pc.describe_index(INDEX_NAME).status['ready']:
             time.sleep(1)
-    return index_name, namespace
+    return INDEX_NAME, NAMESPACE
 
 
 def upload_documents_with_ids_to_pinecone(embeddings, ids, index_name, namespace, split_documents):
@@ -176,25 +178,41 @@ def retrieve(query: str):
     # Setup up the environments
     set_pinecone_open_ai_environment()
 
-    # Indexing
-    documents = load_pdf_files()
-
-    split_documents = split_documents_chunks(documents)
-
-    ids = generate_content_based_ids(split_documents)
+    pc = Pinecone()
 
     embeddings = init_embeddings()
 
-    index_name, namespace = init_pinecone_set_serverless_spec(embeddings)
+    if INDEX_NAME not in pc.list_indexes().names():
 
-    vector_store = upload_documents_with_ids_to_pinecone(embeddings, ids,
-                                                         index_name, namespace,
-                                                         split_documents)
+        # Indexing
+        documents = load_pdf_files()
 
-    retrieved_docs = vector_store.similarity_search(query, k=2)
+        split_documents = split_documents_chunks(documents)
+
+        ids = generate_content_based_ids(split_documents)
+
+        index_name, namespace = init_pinecone_set_serverless_spec(embeddings)
+
+        vector_store = upload_documents_with_ids_to_pinecone(embeddings, ids,
+                                                             index_name, namespace,
+                                                             split_documents)
+    else:
+
+        vector_store = PineconeVectorStore.from_existing_index(
+            index_name=INDEX_NAME,
+            embedding=embeddings,
+            namespace=NAMESPACE
+        )
+
+    reranker = PineconeRerank(model="bge-reranker-v2-m3", top_n=3)
+
+    retrieved_docs = vector_store.similarity_search(query, k=10)
+
+    reranked_docs = reranker.compress_documents(retrieved_docs, query)
+
     serialized = "\n\n".join(
         (f"Source: {doc.metadata}\n" f"Content: {doc.page_content}")
-        for doc in retrieved_docs
+        for doc in reranked_docs
     )
     return serialized, retrieved_docs
 
@@ -216,7 +234,15 @@ def rag_evaluation():
     vector_store = upload_documents_with_ids_to_pinecone(embeddings, ids,
                                                          index_name, namespace,
                                                          split_documents)
-    return vector_store.as_retriever(k=2)
+    retriever = vector_store.as_retriever(k=10)
+
+    model = HuggingFaceCrossEncoder(model_name="BAAI/bge-reranker-base")
+    compressor = CrossEncoderReranker(model=model, top_n=3)
+    compression_retriever = ContextualCompressionRetriever(
+        base_compressor=compressor, base_retriever=retriever
+    )
+
+    return compression_retriever
 
 def trim_messages(messages):
     if len(messages) > MAX_MESSAGES:
@@ -248,11 +274,19 @@ def generate_user_message(input_message, thread_id):
             # Trim to the last MAX_MESSAGES
             initial_messages = trim_messages(initial_messages)
 
+        print("================================")
+        print(initial_messages)
+        print("================================")
+
         # Create agent with checkpointer
         agent_executor = create_react_agent(llm, [retrieve], checkpointer=checkpointer)
 
         # Prepare the input with trimmed context
         input_state = {"messages": initial_messages + [{"role": "user", "content": input_message}]}
+
+        print("++++++++++++++++++++++++++++++++++++")
+        print(input_state)
+        print("++++++++++++++++++++++++++++++++++++")
 
         # Step 4: Process the new message
         response_stream = agent_executor.stream(
@@ -272,13 +306,14 @@ def generate_user_message(input_message, thread_id):
 def main():
     input_message = (
         "What are the inflammatory medicines?"
-        #"How many milligram do I need to take of the last medicine I ask?"
+        # "What are the medicines you suggested before?"
+        # "What is Calamine?"
+        # "What is my first question?"
     )
     # print(generate_user_message("Hello", "j300"))
-    print(generate_user_message(input_message, "patient_1_002"))
+    print(generate_user_message(input_message, "patient_401"))
 
     print(utils.tracing_is_enabled())
-
 
 if __name__ == '__main__':
     main()

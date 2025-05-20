@@ -31,7 +31,9 @@ llm = ChatOpenAI(
 def rag_bot(question: str) -> dict:
     retriever = rag_evaluation()
     docs = retriever.invoke(question)
-    docs_string = "".join(doc.page_content for doc in docs)
+    print("******************************")
+    print(docs)
+    docs_string = "".join([doc.page_content + str(doc.metadata) for doc in docs])
     instructions = f"""
         You are a helpful assistant who is good at analyzing source information and answering questions.
 
@@ -54,13 +56,7 @@ def rag_bot(question: str) -> dict:
 
 
 answer_from_rag = """
-Inflammatory medicines, particularly those classified as anti-inflammatory and antipruritic, include:
-
-1. **Betamethasone**: A potent corticosteroid used in cream or ointment form (0.1% as valerate).
-2. **Hydrocortisone**: A weaker corticosteroid available in cream or ointment form (1% acetate).
-3. **Calamine**: Often used in lotion form for its soothing properties.
-
-These medications are commonly used to reduce inflammation and alleviate itching associated with various skin conditions.
+The inflammatory medicines listed include betamethasone and hydrocortisone, both available in cream or ointment forms. Betamethasone is a potent corticosteroid, while hydrocortisone is a weaker corticosteroid preferred for use in neonates. Additionally, calamine and benzoyl peroxide are mentioned as anti-inflammatory and antipruritic options.
 """
 
 examples = [

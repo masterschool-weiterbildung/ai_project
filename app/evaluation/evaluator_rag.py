@@ -30,7 +30,7 @@ llm = ChatOpenAI(
 def rag_bot(question: str) -> dict:
     retriever = rag_evaluation()
     docs = retriever.invoke(question)
-    docs_string = "".join(doc.page_content for doc in docs)
+    docs_string = "".join([doc.page_content + str(doc.metadata) for doc in docs])
     instructions = f"""
         You are a helpful assistant who is good at analyzing source information and answering questions.
         
@@ -64,6 +64,8 @@ These medications are commonly used to reduce inflammation and alleviate itching
 
 examples = [
     {
+        "inputs": {"question": "What are the inflammatory medicines?"},
+        "outputs": {"answer": f"{answer_from_rag}"},
         "inputs": {"question": "What are the inflammatory medicines?"},
         "outputs": {"answer": f"{answer_from_rag}"},
     }
