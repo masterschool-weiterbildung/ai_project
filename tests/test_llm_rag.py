@@ -56,7 +56,7 @@ def rag_bot(question: str) -> dict:
 
 
 answer_from_rag = """
-The inflammatory medicines listed include betamethasone and hydrocortisone, both available in cream or ointment forms. Betamethasone is a potent corticosteroid, while hydrocortisone is a weaker corticosteroid preferred for use in neonates. Additionally, calamine and benzoyl peroxide are mentioned as anti-inflammatory and antipruritic options.
+The anti-inflammatory medicines listed include sulfasalazine, mesalazine, hydrocortisone, and prednisolone. They are available in various forms such as retention enemas, suppositories, and tablets. Additionally, betamethasone and calamine are also mentioned as anti-inflammatory and antipruritic medicines.
 """
 
 examples = [

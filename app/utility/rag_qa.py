@@ -22,6 +22,7 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.document_loaders import PyPDFLoader
 from langchain_pinecone import PineconeVectorStore
 from langchain.chains import create_retrieval_chain
+from langchain.schema import HumanMessage, SystemMessage
 from langchain_pinecone import PineconeEmbeddings
 from langchain_pinecone import PineconeRerank
 from langchain_core.tools import tool
@@ -32,6 +33,8 @@ from langgraph.prebuilt import create_react_agent
 from langgraph.checkpoint.postgres import PostgresSaver
 
 from psycopg_pool import ConnectionPool
+
+from app.utility.prompt import rag_system_prompt_generate
 
 os.environ[
     "OPENAI_API_KEY"] = get_env_key("OPEN_AI_KEY")
@@ -84,11 +87,12 @@ def load_pdf_files():
         documents.extend(docs)
     return documents
 
-
 """"
     2. Split: Text splitters break large Documents into smaller chunks. 
     This is useful both for indexing data and passing it into a model, 
     as large chunks are harder to search over and won't fit in a model's finite context window.
+    Chunk Optimization — Recursive Structure Aware, A hybrid method combining fixed-size sliding window 
+    and structure-aware splitting. 
 """
 
 
@@ -182,6 +186,8 @@ def retrieve(query: str):
 
     embeddings = init_embeddings()
 
+    generate_hypothetical_document_embeddings(embeddings, query)
+
     if INDEX_NAME not in pc.list_indexes().names():
 
         # Indexing
@@ -204,7 +210,7 @@ def retrieve(query: str):
             namespace=NAMESPACE
         )
 
-    reranker = PineconeRerank(model="bge-reranker-v2-m3", top_n=3)
+    reranker = PineconeRerank(model="bge-reranker-v2-m3", top_n=5)
 
     retrieved_docs = vector_store.similarity_search(query, k=10)
 
@@ -215,6 +221,21 @@ def retrieve(query: str):
         for doc in reranked_docs
     )
     return serialized, retrieved_docs
+
+
+"""
+    In HyDE (Hypothetical Document Embeddings) we let the LLM create an answer to the
+    user’s query without context first, and use the answer to search for relevant 
+    information within our vector database.
+"""
+
+def generate_hypothetical_document_embeddings(embeddings, query):
+    messages = [
+        SystemMessage(content="Answer the following question. Give the rational before answering"),
+        HumanMessage(content=query)
+    ]
+    hypothetical_answer = llm.invoke(messages)
+    embeddings.embed_query(hypothetical_answer.content)
 
 def rag_evaluation():
     # Setup up the environments
@@ -229,6 +250,7 @@ def rag_evaluation():
 
     embeddings = init_embeddings()
 
+
     index_name, namespace = init_pinecone_set_serverless_spec(embeddings)
 
     vector_store = upload_documents_with_ids_to_pinecone(embeddings, ids,
@@ -237,7 +259,7 @@ def rag_evaluation():
     retriever = vector_store.as_retriever(k=10)
 
     model = HuggingFaceCrossEncoder(model_name="BAAI/bge-reranker-base")
-    compressor = CrossEncoderReranker(model=model, top_n=3)
+    compressor = CrossEncoderReranker(model=model, top_n=5)
     compression_retriever = ContextualCompressionRetriever(
         base_compressor=compressor, base_retriever=retriever
     )
@@ -279,7 +301,7 @@ def generate_user_message(input_message, thread_id):
         print("================================")
 
         # Create agent with checkpointer
-        agent_executor = create_react_agent(llm, [retrieve], checkpointer=checkpointer)
+        agent_executor = create_react_agent(llm, [retrieve], checkpointer=checkpointer, prompt=rag_system_prompt_generate)
 
         # Prepare the input with trimmed context
         input_state = {"messages": initial_messages + [{"role": "user", "content": input_message}]}
@@ -311,7 +333,7 @@ def main():
         # "What is my first question?"
     )
     # print(generate_user_message("Hello", "j300"))
-    print(generate_user_message(input_message, "patient_401"))
+    print(generate_user_message(input_message, "patient_11"))
 
     print(utils.tracing_is_enabled())
 

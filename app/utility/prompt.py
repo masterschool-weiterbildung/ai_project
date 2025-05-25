@@ -1,3 +1,6 @@
+rag_system_prompt_generate = \
+    "You are a friendly chatbot. Answer the following question using only the information from the context"
+
 system_prompt_generate = """"
     You are a nurse preparing a handoff report for the incoming shift.
     
