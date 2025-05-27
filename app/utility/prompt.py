@@ -1,3 +1,31 @@
+context_recall_answer = """"
+Inflammatory medicines, more commonly referred to as anti-inflammatory medications, are drugs that help reduce inflammation in the body. Inflammation is a natural response of the immune system to injury or infection, but chronic inflammation can lead to various health issues. There are two main categories of anti-inflammatory medications: non-steroidal anti-inflammatory drugs (NSAIDs) and corticosteroids.
+
+1. **Non-Steroidal Anti-Inflammatory Drugs (NSAIDs)**: These are commonly used to relieve pain, reduce inflammation, and lower fever. Examples include:
+   - Ibuprofen (Advil, Motrin)
+   - Naproxen (Aleve, Naprosyn)
+   - Aspirin
+   - Diclofenac
+
+2. **Corticosteroids**: These are synthetic drugs that closely resemble cortisol, a hormone that the body produces naturally. They are used to treat a variety of inflammatory conditions. Examples include:
+   - Prednisone
+   - Hydrocortisone
+   - Dexamethasone
+   - Methylprednisolone
+
+3. **Disease-Modifying Anti-Rheumatic Drugs (DMARDs)**: These are used primarily in autoimmune diseases to slow down disease progression and reduce inflammation. Examples include:
+   - Methotrexate
+   - Sulfasalazine
+   - Hydroxychloroquine
+
+4. **Biologics**: These are a newer class of medications that target specific parts of the immune system. They are often used for autoimmune diseases and include:
+   - Tumor necrosis factor (TNF) inhibitors (e.g., Etanercept, Infliximab)
+   - Interleukin inhibitors (e.g., Ustekinumab)
+
+The choice of anti-inflammatory medication depends on the specific condition being treated, the severity of inflammation, and the patient's overall health profile. It's important to consult a healthcare professional before starting any medication to ensure it is appropriate for the individual's situation.
+"""
+
+
 rag_system_prompt_generate = \
     "You are a friendly chatbot. Answer the following question using only the information from the context"
 

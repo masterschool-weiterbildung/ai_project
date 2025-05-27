@@ -32,6 +32,11 @@ from langgraph.graph import MessagesState
 from langgraph.prebuilt import create_react_agent
 from langgraph.checkpoint.postgres import PostgresSaver
 
+from ragas.integrations.langgraph import convert_to_ragas_messages
+from ragas.metrics import ToolCallAccuracy
+from ragas.dataset_schema import MultiTurnSample
+import ragas.messages as r
+
 from psycopg_pool import ConnectionPool
 
 from app.utility.prompt import rag_system_prompt_generate
@@ -210,9 +215,9 @@ def retrieve(query: str):
             namespace=NAMESPACE
         )
 
-    reranker = PineconeRerank(model="bge-reranker-v2-m3", top_n=5)
+    reranker = PineconeRerank(model="bge-reranker-v2-m3", top_n=3)
 
-    retrieved_docs = vector_store.similarity_search(query, k=10)
+    retrieved_docs = vector_store.similarity_search(query, k=5)
 
     reranked_docs = reranker.compress_documents(retrieved_docs, query)
 
@@ -231,7 +236,7 @@ def retrieve(query: str):
 
 def generate_hypothetical_document_embeddings(embeddings, query):
     messages = [
-        SystemMessage(content="Answer the following question. Give the rational before answering"),
+        SystemMessage(content="Answer the following question. Give the rationale before answering"),
         HumanMessage(content=query)
     ]
     hypothetical_answer = llm.invoke(messages)
@@ -259,7 +264,7 @@ def rag_evaluation():
     retriever = vector_store.as_retriever(k=10)
 
     model = HuggingFaceCrossEncoder(model_name="BAAI/bge-reranker-base")
-    compressor = CrossEncoderReranker(model=model, top_n=5)
+    compressor = CrossEncoderReranker(model=model, top_n=3)
     compression_retriever = ContextualCompressionRetriever(
         base_compressor=compressor, base_retriever=retriever
     )
@@ -333,7 +338,7 @@ def main():
         # "What is my first question?"
     )
     # print(generate_user_message("Hello", "j300"))
-    print(generate_user_message(input_message, "patient_11"))
+    print(generate_user_message(input_message, "patient_5"))
 
     print(utils.tracing_is_enabled())
 
