@@ -101,6 +101,9 @@ To set up the project locally, follow these steps:
 ---
 
 ## How does Chatbot works?
+
+<img width="981" alt="Screenshot 2025-06-04 at 11 13 00" src="https://github.com/user-attachments/assets/b86a8ad1-6aae-4459-99e2-6c7b675faf64" />
+
 ### Summary:
 The chatbot functionality allows patients to send messages and ask questions about a particular medicine for an ailment or illness. This is a demonstration and prototype designed to showcase Retrieval-Augmented Generation (RAG), which is one of the most efficient and cost-effective ways for companies to build their own AI applications using Large Language Models (LLMs).
 ### Background and Motivation:
