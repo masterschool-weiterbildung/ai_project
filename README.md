@@ -1,5 +1,10 @@
 ## AI Project Nursing Assistant Application
 ##### This repository contains the backend code for an AI-powered application developed as part of the Masterschool Weiterbildung AI Engineering program. The project provides API endpoints for various AI functionalities, including a chatbot feature leveraging agentic Retrieval-Augmented Generation (RAG). The codebase is structured to support a scalable and maintainable architecture.
+
+---
+
+[![Watch the video](https://youtu.be/U0C0g2edwiw)](https://youtu.be/U0C0g2edwiw)
+
 ---
 
 ## How to Install?
